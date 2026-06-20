@@ -1,2 +1,2 @@
-# colherinha
-Medidor de colheres diárias para pessoas autistas
+# spoony
+Daily spoon logger for autistic people
