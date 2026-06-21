@@ -15,6 +15,8 @@ import { activityLabel } from '@/providers/i18n';
 
 interface Props {
   activity: Activity;
+  /** Activity group only: the icon toggles takes <-> gives. */
+  canToggleType: boolean;
   onCycleType: (id: string) => void;
   onPatch: (id: string, patch: Partial<Activity>) => void;
   onRemove: (id: string) => void;
@@ -26,7 +28,7 @@ function toNumber(v: number | string): number | undefined {
   return Number.isNaN(n) ? undefined : n;
 }
 
-export function SortableActivityRow({ activity, onCycleType, onPatch, onRemove }: Props) {
+export function SortableActivityRow({ activity, canToggleType, onCycleType, onPatch, onRemove }: Props) {
   const { t } = useTranslation();
   const [open, { toggle }] = useDisclosure(false);
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -40,21 +42,25 @@ export function SortableActivityRow({ activity, onCycleType, onPatch, onRemove }
   };
 
   const defaultLabel = activityLabel(t, activity.id, undefined);
-  const hasDefaults =
-    activity.type === 'takes' || activity.type === 'gives' || activity.type === 'wakeup';
-  const expandable = hasDefaults || activity.type === 'numeric';
+  const hasCounts = activity.type === 'takes' || activity.type === 'gives';
+  const isNumeric = activity.type === 'numeric';
+  const expandable = hasCounts || isNumeric;
 
   return (
     <Card ref={setNodeRef} style={style} withBorder padding="xs" radius="md">
       <Group gap="xs" wrap="nowrap">
-        <ActionIcon
-          variant="subtle"
-          aria-label={t('config.typeHint')}
-          title={t(`activityType.${activity.type}`)}
-          onClick={() => onCycleType(activity.id)}
-        >
+        {canToggleType ? (
+          <ActionIcon
+            variant="light"
+            aria-label={t('config.typeHint')}
+            title={t(`activityType.${activity.type}`)}
+            onClick={() => onCycleType(activity.id)}
+          >
+            <ActivityIcon type={activity.type} />
+          </ActionIcon>
+        ) : (
           <ActivityIcon type={activity.type} />
-        </ActionIcon>
+        )}
 
         <TextInput
           style={{ flex: 1 }}
@@ -94,7 +100,7 @@ export function SortableActivityRow({ activity, onCycleType, onPatch, onRemove }
       {expandable && (
         <Collapse expanded={open}>
           <Group grow mt="xs" px={4}>
-            {hasDefaults && (
+            {hasCounts && (
               <>
                 <NumberInput
                   size="xs"
@@ -105,14 +111,14 @@ export function SortableActivityRow({ activity, onCycleType, onPatch, onRemove }
                 />
                 <NumberInput
                   size="xs"
-                  label={t('config.defaultUsed')}
+                  label={activity.type === 'gives' ? t('config.defaultGained') : t('config.defaultUsed')}
                   min={0}
                   value={activity.defaultUsed ?? ''}
                   onChange={(v) => onPatch(activity.id, { defaultUsed: toNumber(v) })}
                 />
               </>
             )}
-            {activity.type === 'numeric' && (
+            {isNumeric && (
               <NumberInput
                 size="xs"
                 label={t('config.scaleMax')}

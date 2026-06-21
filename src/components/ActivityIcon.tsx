@@ -19,12 +19,12 @@ export function ActivityIcon({ type, size = 18 }: Props) {
     case 'wakeup':
       return <IconSparkles size={size} color="var(--mantine-color-cyan-5)" />;
     case 'takes':
-      return <IconTriangleInvertedFilled size={size} color="var(--mantine-color-red-6)" />;
+      return <IconTriangleInvertedFilled size={size} color="var(--mantine-color-pumpkin-6)" />;
     case 'gives':
       return <IconTriangleFilled size={size} color="var(--mantine-color-spoon-6)" />;
     case 'numeric':
-      return <IconGauge size={size} color="var(--mantine-color-yellow-6)" />;
+      return <IconGauge size={size} color="var(--mantine-color-plum-6)" />;
     case 'note':
-      return <IconLetterT size={size} color="var(--mantine-color-grape-5)" />;
+      return <IconLetterT size={size} color="var(--mantine-color-forest-6)" />;
   }
 }

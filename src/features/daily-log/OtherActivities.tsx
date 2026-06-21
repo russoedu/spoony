@@ -73,7 +73,7 @@ export function OtherActivities({ day, onChange }: Props) {
             />
             <NumberInput
               size="sm"
-              label={t('dailyLog.used')}
+              label={item.type === 'gives' ? t('dailyLog.gained') : t('dailyLog.used')}
               min={0}
               value={item.used ?? ''}
               onChange={(v) => patch(item.id, { used: toNumber(v) })}

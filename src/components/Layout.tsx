@@ -1,7 +1,6 @@
-import { ActionIcon, AppShell, Container, Group } from '@mantine/core';
+import { ActionIcon, AppShell, Container, Group, Image } from '@mantine/core';
 import { IconCalendar, IconMenu2 } from '@tabler/icons-react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { Wordmark } from './Wordmark';
 import { SaveIndicator } from './SaveIndicator';
 
 export function Layout() {
@@ -12,10 +11,10 @@ export function Layout() {
         <Group h="100%" px="md" justify="space-between" wrap="nowrap">
           <button
             onClick={() => navigate('/')}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex' }}
             aria-label="Spoony home"
           >
-            <Wordmark size={30} />
+            <Image src="/full-logo.svg" alt="Spoony" h={36} w="auto" fit="contain" />
           </button>
           <Group gap="xs" wrap="nowrap">
             <SaveIndicator />

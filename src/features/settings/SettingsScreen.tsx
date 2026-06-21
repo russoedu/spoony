@@ -18,6 +18,7 @@ import {
   IconDownload,
   IconList,
   IconLogout,
+  IconShare,
 } from '@tabler/icons-react';
 import { notifications } from '@mantine/notifications';
 import { useNavigate } from 'react-router-dom';
@@ -45,6 +46,24 @@ export function SettingsScreen() {
     notifications.show({ message: t('settings.exportDone'), color: 'spoon' });
   };
 
+  const onShare = async () => {
+    const shareData = {
+      title: 'Spoony',
+      text: t('settings.shareText'),
+      url: 'https://spoony.web.app',
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(shareData.url);
+        notifications.show({ message: shareData.url, color: 'grape' });
+      }
+    } catch {
+      // user cancelled the share sheet — ignore
+    }
+  };
+
   return (
     <Stack gap="xs" pb={120}>
       <Title order={3}>{t('settings.title')}</Title>
@@ -70,6 +89,8 @@ export function SettingsScreen() {
       />
 
       <Row icon={<IconDownload size={20} />} label={t('settings.exportData')} onClick={() => void onExport()} />
+
+      <Row icon={<IconShare size={20} />} label={t('settings.share')} onClick={() => void onShare()} />
 
       <Divider />
 
