@@ -1,0 +1,127 @@
+{
+  "app": {
+    "name": "spoony",
+    "tagline": "daily energy tracker"
+  },
+  "common": {
+    "done": "Done",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "add": "Add",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "today": "Today",
+    "loading": "Loading…",
+    "retry": "Retry"
+  },
+  "auth": {
+    "connectTitle": "Connect with your Google Account",
+    "encryptedNote": "All data will be saved encrypted on your Google Drive",
+    "signIn": "Sign in with Google",
+    "signingIn": "Signing in…",
+    "connecting": "Google Account connection screen…",
+    "signOut": "Sign out",
+    "error": "Sign-in failed. Please try again.",
+    "retry": "Try again"
+  },
+  "nav": {
+    "daily": "Daily log",
+    "history": "History",
+    "settings": "Settings"
+  },
+  "activity": {
+    "spoons": "Waking up spoons",
+    "pain": "Pain 0-10",
+    "getOutOfBed": "Get out of bed",
+    "toilet": "Toilet",
+    "getReady": "Get ready",
+    "eat": "Eat",
+    "shower": "Shower",
+    "cook": "Cook",
+    "clean": "Clean",
+    "physiotherapy": "Physiotherapy",
+    "exercise": "Exercise / walk / bike",
+    "relax": "Relax / meditation / nap",
+    "activities": "Activities / Lego / puzzle",
+    "therapy": "Therapy",
+    "journal": "Journal",
+    "hyperfocus": "Hyperfocus",
+    "wokeUpFeel": "How I woke up",
+    "slept": "How I slept",
+    "plan": "Plan",
+    "need": "Need",
+    "want": "Want"
+  },
+  "activityType": {
+    "wakeup": "Spoons you woke up with",
+    "takes": "This activity takes spoons",
+    "gives": "This activity gives spoons",
+    "numeric": "A 0-10 scale (recorded only)",
+    "note": "A note field"
+  },
+  "dailyLog": {
+    "wokeUpAt": "Woke up at",
+    "estimated": "Estimated",
+    "used": "Used",
+    "balancePlanned": "Planned balance",
+    "balanceUsed": "Spoons left",
+    "spoonsWokeUp": "Woke up with",
+    "otherActivities": "Other activities",
+    "addOther": "Add activity…",
+    "otherLabel": "Activity name",
+    "feelSection": "How did I feel",
+    "notePlaceholder": "Write here…",
+    "autoSaving": "auto saving…",
+    "saved": "saved",
+    "offline": "offline — saved on this device"
+  },
+  "config": {
+    "title": "Activities",
+    "instructions": "Configure your activities (you can edit it later in the options). Click to edit the text, drag up/down to reorder and drag left to delete. Change the activity type clicking the symbol next to the drag button.",
+    "addItem": "add item",
+    "defaultEstimated": "Default estimated",
+    "defaultUsed": "Default used",
+    "scaleMax": "Scale maximum",
+    "editLabel": "Activity name",
+    "typeHint": "Tap the icon to change the type",
+    "deleteConfirm": "Delete this activity?",
+    "legendTitle": "Legend"
+  },
+  "settings": {
+    "title": "Settings",
+    "editActivities": "edit activities list",
+    "exportData": "export my data",
+    "reports": "reports",
+    "reportsFuture": "future feature",
+    "theme": "theme",
+    "themeLight": "light",
+    "themeDark": "dark",
+    "themeSystem": "system",
+    "language": "language",
+    "privacy": "privacy policy",
+    "about": "about spoony app",
+    "exportDone": "Your data has been downloaded."
+  },
+  "install": {
+    "cta": "Add Spoony to your home screen",
+    "install": "Install",
+    "dismiss": "Not now",
+    "iosTitle": "Install Spoony",
+    "iosInstructions": "Tap the Share button, then choose \"Add to Home Screen\"."
+  },
+  "about": {
+    "title": "About Spoony",
+    "body": "Spoony is a daily energy tracker based on Spoon Theory. Your data is stored encrypted in a private folder on your own Google Drive — no one else can read it.",
+    "version": "Version"
+  },
+  "privacy": {
+    "title": "Privacy policy",
+    "body": "Spoony stores all of your logs in a hidden, app-private folder on your own Google Drive, encrypted on your device before upload. We do not run any server and never receive a copy of your data. Revoking access in your Google Account settings stops all syncing."
+  },
+  "language": {
+    "en": "English",
+    "pt": "Português"
+  }
+}
