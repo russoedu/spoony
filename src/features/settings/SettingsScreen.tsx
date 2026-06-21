@@ -39,7 +39,7 @@ export function SettingsScreen() {
   const setLanguage = useStore((s) => s.setLanguage);
   const signOut = useStore((s) => s.signOut);
   const deleteAllData = useStore((s) => s.deleteAllData);
-  const [info, setInfo] = useState<'about' | 'privacy' | null>(null);
+  const [info, setInfo] = useState<'about' | null>(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [confirmEmail, setConfirmEmail] = useState('');
   const [deleting, setDeleting] = useState(false);
@@ -105,7 +105,7 @@ export function SettingsScreen() {
       <Row
         icon={<IconList size={20} />}
         label={t('settings.editActivities')}
-        onClick={() => navigate('/settings/activities')}
+        onClick={() => navigate('/app/settings/activities')}
       />
 
       <Row icon={<IconDownload size={20} />} label={t('settings.exportData')} onClick={() => void onExport()} />
@@ -153,7 +153,8 @@ export function SettingsScreen() {
 
       <Divider />
 
-      <Row label={t('settings.privacy')} onClick={() => setInfo('privacy')} />
+      <Row label={t('settings.privacy')} onClick={() => navigate('/privacy')} />
+      <Row label={t('settings.terms')} onClick={() => navigate('/terms')} />
       <Row label={t('settings.about')} onClick={() => setInfo('about')} />
 
       <Divider />

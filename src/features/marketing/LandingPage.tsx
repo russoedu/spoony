@@ -1,14 +1,10 @@
-import i18n, { SUPPORTED_LANGUAGES } from '@/providers/i18n';
-import { useStore } from '@/store/useStore';
+import { SignInButton } from '@/components/SignInButton';
 import {
   Badge,
   Box,
-  Button,
   Card,
   Container,
-  Group,
   Image,
-  SegmentedControl,
   SimpleGrid,
   Stack,
   Text,
@@ -17,7 +13,6 @@ import {
 } from '@mantine/core';
 import {
   IconAdjustmentsHeart,
-  IconBrandGoogle,
   IconDeviceMobile,
   IconLanguage,
   IconLock,
@@ -26,38 +21,6 @@ import {
   IconWifiOff,
 } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
-
-function SignInButton({ size = 'md' }: { size?: string }) {
-  const { t } = useTranslation();
-  const signIn = useStore((s) => s.signIn);
-  const status = useStore((s) => s.authStatus);
-  const authError = useStore((s) => s.authError);
-  return (
-    <Stack align="center" gap={6}>
-      <Button
-        size={size}
-        radius="xl"
-        leftSection={<IconBrandGoogle size={18} />}
-        loading={status === 'connecting'}
-        onClick={() => void signIn()}
-      >
-        {t('auth.signIn')}
-      </Button>
-      {status === 'error' && (
-        <Stack align="center" gap={4} maw={320}>
-          <Badge color="red" variant="filled">
-            {t('auth.error')}
-          </Badge>
-          {authError && (
-            <Text size="xs" c="red" ta="center" style={{ wordBreak: 'break-word' }}>
-              {authError}
-            </Text>
-          )}
-        </Stack>
-      )}
-    </Stack>
-  );
-}
 
 export function LandingPage() {
   const { t } = useTranslation();
@@ -85,24 +48,6 @@ export function LandingPage() {
 
   return (
     <Box>
-      {/* Top bar */}
-      <Container  h="80" py="sm">
-        <Group justify="space-between">
-          <Image src="/full-logo.svg" alt="Spoony" h={40} w="auto" fit="contain" />
-          <Group gap="sm">
-            <SegmentedControl
-              size="xs"
-              value={SUPPORTED_LANGUAGES.includes(i18n.resolvedLanguage as never) ? (i18n.resolvedLanguage as string) : 'en'}
-              onChange={(v) => void i18n.changeLanguage(v)}
-              data={SUPPORTED_LANGUAGES.map((l) => ({ value: l, label: l.toUpperCase() }))}
-            />
-            <Box visibleFrom="xs">
-              <SignInButton size="sm" />
-            </Box>
-          </Group>
-        </Group>
-      </Container>
-
       {/* Hero */}
       <Box
         style={{

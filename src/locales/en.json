@@ -113,6 +113,7 @@
     "themeSystem": "system",
     "language": "language",
     "privacy": "privacy policy",
+    "terms": "terms of service",
     "about": "about spoony app",
     "exportDone": "Your data has been downloaded.",
     "deleteAccount": "delete my account & data",
@@ -134,9 +135,99 @@
     "body": "Spoony is a daily energy tracker based on Spoon Theory. Your data is stored encrypted in a private folder on your own Google Drive — no one else can read it.",
     "version": "Version"
   },
-  "privacy": {
-    "title": "Privacy policy",
-    "body": "Spoony stores all of your logs in a hidden, app-private folder on your own Google Drive, encrypted on your device before upload. We do not run any server and never receive a copy of your data. Revoking access in your Google Account settings stops all syncing."
+  "privacyPolicy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: June 21, 2026",
+    "intro": "Spoony is a free, open-source daily energy tracker. This page explains exactly what data the app touches, and what it doesn't — in plain language.",
+    "sections": [
+      {
+        "heading": "Short version",
+        "body": "We don't have a server, a database, or any way to see your data. Everything you log is encrypted on your device and stored either locally in your browser or in a hidden, private folder on your own Google Drive. We never receive a copy of it."
+      },
+      {
+        "heading": "What we access from your Google account",
+        "body": "When you sign in with Google, Spoony requests only: your name, email and profile picture (to show who's signed in), and access to a hidden, app-only folder in your Google Drive (technically called \"drive.appdata\") that only Spoony can see — not your regular Drive files, and not anything else in your Google account."
+      },
+      {
+        "heading": "What we store, and where",
+        "body": "Your daily logs and activity settings are stored in your browser's local storage and, if you're signed in, encrypted and synced to that hidden Drive folder so you can use Spoony on more than one device. The encryption key is generated on your device and is never sent to us — it only travels, alongside your encrypted data, to your own Drive folder."
+      },
+      {
+        "heading": "How encryption works",
+        "body": "Before anything leaves your device, it's encrypted with AES-256-GCM using a key generated locally. Google Drive only ever stores the encrypted bytes, plus the key needed to decrypt them — both inside your own private, app-only Drive folder. Nobody but you (and whoever holds the key) can read your logs, including us."
+      },
+      {
+        "heading": "What we don't do",
+        "body": "No analytics, no advertising, no trackers, no cookies set by Spoony, and no third party other than Google (which provides sign-in and your own Drive storage). There is no Spoony server: the app is static code that runs entirely in your browser."
+      },
+      {
+        "heading": "Your control over your data",
+        "body": "You can export your data at any time from Settings. You can permanently delete everything — your Drive folder and your local browser data — from Settings → \"delete my account & data\". You can also revoke Spoony's access at any time from your Google Account's security settings, which immediately stops any syncing."
+      },
+      {
+        "heading": "Data retention",
+        "body": "Your data is kept for as long as you keep using Spoony. We don't keep backups, because we never have a copy to back up. Deleting your data from Settings removes it from both your device and your Google Drive."
+      },
+      {
+        "heading": "Children's privacy",
+        "body": "Spoony is not directed at children and we don't knowingly collect data from anyone under 13."
+      },
+      {
+        "heading": "Open source",
+        "body": "Spoony's full source code is public, so you (or anyone) can verify every claim on this page. You can find it at github.com/russoedu/spoony."
+      },
+      {
+        "heading": "Changes to this policy",
+        "body": "If this policy changes, we'll update the date above. Continuing to use Spoony after a change means you accept the update."
+      },
+      {
+        "heading": "Contact",
+        "body": "Questions about your data or this policy? Email mentautoapps@gmail.com."
+      }
+    ]
+  },
+  "termsOfService": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: June 21, 2026",
+    "intro": "These terms cover your use of Spoony, a free, open-source daily energy tracker. By using the app, you agree to them.",
+    "sections": [
+      {
+        "heading": "The service",
+        "body": "Spoony is a free tool to help you log and plan your daily energy (\"spoons\") based on Spoon Theory. It is provided as-is, with no guarantee of uninterrupted availability, and it is not a medical device — it does not diagnose, treat, or provide medical advice. Always consult a qualified professional for medical decisions."
+      },
+      {
+        "heading": "Your account and data",
+        "body": "You sign in with your own Google account. Your logs are encrypted on your device and stored locally and in a private folder on your own Google Drive — see the Privacy Policy for details. You own your data; we never hold a copy of it."
+      },
+      {
+        "heading": "Acceptable use",
+        "body": "Use Spoony only for its intended purpose. Don't attempt to interfere with, reverse-engineer for malicious purposes, or abuse the Google APIs the app relies on."
+      },
+      {
+        "heading": "Open source & license",
+        "body": "Spoony's source code is published under the MIT license at github.com/russoedu/spoony. You're free to read, fork, self-host, or modify it under that license's terms."
+      },
+      {
+        "heading": "No warranty",
+        "body": "Spoony is provided \"as is\", free of charge, by an individual developer, with no warranties of any kind, express or implied. To the maximum extent permitted by law, we are not liable for any damages or losses arising from your use of the app, including data loss — though by design, your data lives in your own Google Drive and browser, not with us."
+      },
+      {
+        "heading": "Changes & availability",
+        "body": "The app may change, be updated, or be discontinued at any time. Since this isn't a paid or contractual service, we don't guarantee any specific level of availability."
+      },
+      {
+        "heading": "Ending your use",
+        "body": "You can stop using Spoony at any time. Revoke its access from your Google Account's security settings, and delete everything from Settings → \"delete my account & data\"."
+      },
+      {
+        "heading": "Changes to these terms",
+        "body": "If these terms change, we'll update the date above. Continuing to use Spoony after a change means you accept the update."
+      },
+      {
+        "heading": "Contact",
+        "body": "Questions about these terms? Email mentautoapps@gmail.com."
+      }
+    ]
   },
   "language": {
     "en": "English",
@@ -174,6 +265,8 @@
     "featThemeTitle": "Light or dark",
     "featThemeBody": "A calm, friendly look that follows your system theme.",
     "footerCta": "Ready to track your spoons?",
-    "footerNote": "Free • no ads • your data stays yours"
+    "footerNote": "Free • no ads • your data stays yours",
+    "privacyLink": "Privacy Policy",
+    "termsLink": "Terms of Service"
   }
 }

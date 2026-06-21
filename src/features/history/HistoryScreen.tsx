@@ -20,7 +20,7 @@ export function HistoryScreen() {
 
   const open = async (iso: string) => {
     await setDate(iso);
-    navigate('/');
+    navigate('/app');
   };
 
   return (
