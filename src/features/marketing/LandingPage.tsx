@@ -32,15 +32,22 @@ function SignInButton({ size = 'md' }: { size?: string }) {
   const signIn = useStore((s) => s.signIn);
   const status = useStore((s) => s.authStatus);
   return (
-    <Button
-      size={size}
-      radius="xl"
-      leftSection={<IconBrandGoogle size={18} />}
-      loading={status === 'connecting'}
-      onClick={() => void signIn()}
-    >
-      {t('auth.signIn')}
-    </Button>
+    <Stack align="center" gap={6}>
+      <Button
+        size={size}
+        radius="xl"
+        leftSection={<IconBrandGoogle size={18} />}
+        loading={status === 'connecting'}
+        onClick={() => void signIn()}
+      >
+        {t('auth.signIn')}
+      </Button>
+      {status === 'error' && (
+        <Badge color="red" variant="filled">
+          {t('auth.error')}
+        </Badge>
+      )}
+    </Stack>
   );
 }
 

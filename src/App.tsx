@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Center, Loader } from '@mantine/core';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useStore } from '@/store/useStore';
+import { preloadGis } from '@/lib/google/gis-auth';
 import { ThemeController } from '@/components/ThemeController';
 import { InstallPrompt } from '@/components/InstallPrompt';
 import { Layout } from '@/components/Layout';
@@ -18,6 +19,7 @@ export function App() {
   const setOnline = useStore((s) => s.setOnline);
 
   useEffect(() => {
+    preloadGis(); // ready the OAuth popup before the user clicks sign-in
     void restoreSession();
   }, [restoreSession]);
 
