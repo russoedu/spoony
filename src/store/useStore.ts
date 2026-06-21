@@ -313,6 +313,13 @@ export const useStore = create<StoreState>((set, get) => {
     setLanguage(language) {
       const config = get().config;
       void i18n.changeLanguage(language);
+      // An explicit choice must win over the browser language on future loads.
+      // i18next's detector reads localStorage (key `spoony.lang`) before navigator.
+      try {
+        localStorage.setItem('spoony.lang', language);
+      } catch {
+        // ignore storage failures (e.g. private mode)
+      }
       if (!config) return;
       commitConfig({ ...config, settings: { ...config.settings, language } });
     },
