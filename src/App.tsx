@@ -5,7 +5,7 @@ import { useStore } from '@/store/useStore';
 import { ThemeController } from '@/components/ThemeController';
 import { InstallPrompt } from '@/components/InstallPrompt';
 import { Layout } from '@/components/Layout';
-import { SignInScreen } from '@/features/auth/SignInScreen';
+import { LandingPage } from '@/features/marketing/LandingPage';
 import { DailyLogScreen } from '@/features/daily-log/DailyLogScreen';
 import { HistoryScreen } from '@/features/history/HistoryScreen';
 import { SettingsScreen } from '@/features/settings/SettingsScreen';
@@ -41,7 +41,7 @@ export function App() {
   }
 
   if (authStatus !== 'authed') {
-    return <SignInScreen />;
+    return <LandingPage />;
   }
 
   if (!ready) {

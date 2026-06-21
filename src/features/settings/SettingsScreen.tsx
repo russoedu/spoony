@@ -10,6 +10,7 @@ import {
   SegmentedControl,
   Stack,
   Text,
+  TextInput,
   Title,
   UnstyledButton,
 } from '@mantine/core';
@@ -19,6 +20,7 @@ import {
   IconList,
   IconLogout,
   IconShare,
+  IconTrash,
 } from '@tabler/icons-react';
 import { notifications } from '@mantine/notifications';
 import { useNavigate } from 'react-router-dom';
@@ -36,7 +38,11 @@ export function SettingsScreen() {
   const setTheme = useStore((s) => s.setTheme);
   const setLanguage = useStore((s) => s.setLanguage);
   const signOut = useStore((s) => s.signOut);
+  const deleteAllData = useStore((s) => s.deleteAllData);
   const [info, setInfo] = useState<'about' | 'privacy' | null>(null);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [confirmEmail, setConfirmEmail] = useState('');
+  const [deleting, setDeleting] = useState(false);
 
   const theme = config?.settings.theme ?? 'system';
   const language = config?.settings.language ?? 'en';
@@ -61,6 +67,20 @@ export function SettingsScreen() {
       }
     } catch {
       // user cancelled the share sheet — ignore
+    }
+  };
+
+  const canDelete = !!user && confirmEmail.trim().toLowerCase() === user.email.toLowerCase();
+
+  const onDelete = async () => {
+    setDeleting(true);
+    try {
+      await deleteAllData();
+      setDeleteOpen(false);
+      setConfirmEmail('');
+      notifications.show({ message: t('settings.deleteDone'), color: 'grape' });
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -138,18 +158,53 @@ export function SettingsScreen() {
 
       <Divider />
 
-      <Button
-        variant="subtle"
-        color="red"
-        leftSection={<IconLogout size={18} />}
-        onClick={signOut}
-        mt="sm"
-      >
-        {t('auth.signOut')}
-      </Button>
+      <Group justify="space-between" mt="sm">
+        <Button
+          variant="subtle"
+          color="gray"
+          leftSection={<IconLogout size={18} />}
+          onClick={signOut}
+        >
+          {t('auth.signOut')}
+        </Button>
+        <Button
+          variant="subtle"
+          color="red"
+          leftSection={<IconTrash size={18} />}
+          onClick={() => setDeleteOpen(true)}
+        >
+          {t('settings.deleteAccount')}
+        </Button>
+      </Group>
 
       <Modal opened={info !== null} onClose={() => setInfo(null)} title={info ? t(`${info}.title`) : ''}>
         <Text size="sm">{info ? t(`${info}.body`) : ''}</Text>
+      </Modal>
+
+      <Modal
+        opened={deleteOpen}
+        onClose={() => setDeleteOpen(false)}
+        title={t('settings.deleteTitle')}
+        centered
+      >
+        <Stack>
+          <Text size="sm">{t('settings.deleteBody')}</Text>
+          <TextInput
+            label={t('settings.deleteConfirmLabel')}
+            placeholder={user?.email}
+            value={confirmEmail}
+            onChange={(e) => setConfirmEmail(e.currentTarget.value)}
+            autoComplete="off"
+          />
+          <Group justify="flex-end">
+            <Button variant="default" onClick={() => setDeleteOpen(false)}>
+              {t('common.cancel')}
+            </Button>
+            <Button color="red" disabled={!canDelete} loading={deleting} onClick={() => void onDelete()}>
+              {t('settings.deleteButton')}
+            </Button>
+          </Group>
+        </Stack>
       </Modal>
     </Stack>
   );
