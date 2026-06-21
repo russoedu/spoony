@@ -51,25 +51,35 @@ async function getTokenClient(): Promise<MutableTokenClient> {
   return tokenClient;
 }
 
+/** Preload GIS + the token client so the first sign-in click opens the popup
+ * within the user gesture (awaiting the script load at click time gets blocked). */
+export function preloadGis(): void {
+  void getTokenClient();
+}
+
 /**
  * Request an access token. `interactive` controls whether Google may show the
  * consent/account-picker UI (true on user click, false for silent refresh).
  */
-export async function requestAccessToken(interactive: boolean): Promise<string> {
-  const client = await getTokenClient();
+export function requestAccessToken(interactive: boolean): Promise<string> {
   return new Promise<string>((resolve, reject) => {
-    client.callback = (resp) => {
-      if (resp.error) {
-        reject(new Error(resp.error));
-        return;
-      }
-      accessToken = resp.access_token;
-      // expires_in is seconds; refresh a minute early.
-      tokenExpiry = Date.now() + (Number(resp.expires_in) - 60) * 1000;
-      resolve(resp.access_token);
+    const run = (client: MutableTokenClient) => {
+      client.callback = (resp) => {
+        if (resp.error) {
+          reject(new Error(resp.error));
+          return;
+        }
+        accessToken = resp.access_token;
+        // expires_in is seconds; refresh a minute early.
+        tokenExpiry = Date.now() + (Number(resp.expires_in) - 60) * 1000;
+        resolve(resp.access_token);
+      };
+      client.error_callback = (err) => reject(new Error(err.type || 'oauth_error'));
+      client.requestAccessToken({ prompt: interactive ? 'consent' : '' });
     };
-    client.error_callback = (err) => reject(new Error(err.type || 'oauth_error'));
-    client.requestAccessToken({ prompt: interactive ? 'consent' : '' });
+    // When already preloaded, call synchronously to preserve the click gesture.
+    if (tokenClient) run(tokenClient);
+    else getTokenClient().then(run).catch(reject);
   });
 }
 
