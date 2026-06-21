@@ -1,5 +1,7 @@
 // Generates PWA PNG icons + favicon + apple-touch-icon from public/logo.svg.
-// Run: node scripts/generate-icons.mjs
+// `sharp` and `png-to-ico` are not regular dependencies (the generated icons are
+// committed), so install them ad-hoc before running this rare maintenance script:
+//   npm i -D sharp png-to-ico && node scripts/generate-icons.mjs
 import sharp from 'sharp';
 import pngToIco from 'png-to-ico';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';

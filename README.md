@@ -73,7 +73,7 @@ On mobile, use your browser's **Add to Home Screen** to install it.
 
 ## Development
 
-Requirements: **Node.js 20+**.
+Requirements: **Node.js 22+**.
 
 ```bash
 npm install
