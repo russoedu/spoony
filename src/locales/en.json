@@ -89,6 +89,8 @@
     "editLabel": "Activity name",
     "typeHint": "Tap to switch takes / gives",
     "deleteConfirm": "Delete this activity?",
+    "deleteTitle": "Delete this activity?",
+    "deleteWarning": "If this activity was logged on past days, that data will no longer be shown. This can't be undone.",
     "legendTitle": "Legend",
     "fixed": "fixed",
     "sectionScale": "Scales",

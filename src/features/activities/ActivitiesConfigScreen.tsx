@@ -7,6 +7,7 @@ import {
   Container,
   Divider,
   Group,
+  Modal,
   Paper,
   Stack,
   Text,
@@ -53,6 +54,7 @@ export function ActivitiesConfigScreen() {
   const restoreDefaultActivities = useStore((s) => s.restoreDefaultActivities);
   const missingDefaultsCount = useStore((s) => s.missingDefaultsCount);
   const [legendOpen, setLegendOpen] = useState(false);
+  const [pendingDelete, setPendingDelete] = useState<string | null>(null);
 
   const missingDefaults = missingDefaultsCount();
 
@@ -143,7 +145,7 @@ export function ActivitiesConfigScreen() {
         onAdd={() => addActivity('scale')}
         onCycleType={cycleActivityType}
         onPatch={updateActivity}
-        onRemove={removeActivity}
+        onRemove={setPendingDelete}
       />
       <Section
         titleKey="config.sectionActivities"
@@ -155,7 +157,7 @@ export function ActivitiesConfigScreen() {
         onAdd={() => addActivity('activity')}
         onCycleType={cycleActivityType}
         onPatch={updateActivity}
-        onRemove={removeActivity}
+        onRemove={setPendingDelete}
       />
       <Section
         titleKey="config.sectionNotes"
@@ -167,7 +169,7 @@ export function ActivitiesConfigScreen() {
         onAdd={() => addActivity('note')}
         onCycleType={cycleActivityType}
         onPatch={updateActivity}
-        onRemove={removeActivity}
+        onRemove={setPendingDelete}
       />
 
       {/* Fixed bottom legend with a drawer effect. */}
@@ -202,6 +204,31 @@ export function ActivitiesConfigScreen() {
           </Container>
         </Paper>
       </Affix>
+
+      <Modal
+        opened={pendingDelete !== null}
+        onClose={() => setPendingDelete(null)}
+        title={t('config.deleteTitle')}
+        centered
+      >
+        <Stack>
+          <Text size="sm">{t('config.deleteWarning')}</Text>
+          <Group justify="flex-end">
+            <Button variant="default" onClick={() => setPendingDelete(null)}>
+              {t('common.cancel')}
+            </Button>
+            <Button
+              color="red"
+              onClick={() => {
+                if (pendingDelete) removeActivity(pendingDelete);
+                setPendingDelete(null);
+              }}
+            >
+              {t('common.delete')}
+            </Button>
+          </Group>
+        </Stack>
+      </Modal>
     </Stack>
   );
 }

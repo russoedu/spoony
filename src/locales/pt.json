@@ -89,6 +89,8 @@
     "editLabel": "Nome da atividade",
     "typeHint": "Toque para alternar gasta / dá",
     "deleteConfirm": "Excluir esta atividade?",
+    "deleteTitle": "Excluir esta atividade?",
+    "deleteWarning": "Se esta atividade foi registrada em dias anteriores, esses dados deixarão de ser exibidos. Isso não pode ser desfeito.",
     "legendTitle": "Legenda",
     "fixed": "fixo",
     "sectionScale": "Escalas",
