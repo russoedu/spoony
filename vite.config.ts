@@ -1,7 +1,7 @@
 /// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import basicSsl from '@vitejs/plugin-basic-ssl';
+import mkcert from 'vite-plugin-mkcert';
 import { VitePWA } from 'vite-plugin-pwa';
 import { fileURLToPath, URL } from 'node:url';
 
@@ -14,7 +14,7 @@ const useHttps = !process.env.SPOONY_HTTP;
 export default defineConfig({
   plugins: [
     react(),
-    ...(useHttps ? [basicSsl()] : []),
+    ...(useHttps ? [mkcert()] : []),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'logo.svg'],
