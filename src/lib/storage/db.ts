@@ -61,6 +61,26 @@ export async function putCryptoKeyLocal(keyBase64: string): Promise<void> {
   await (await getDB()).put('kv', keyBase64, 'cryptoKey');
 }
 
+export interface StoredAccessToken {
+  accessToken: string;
+  expiry: number; // ms epoch
+}
+
+// Lets the Google access token survive iOS killing the page's JS context when
+// the installed PWA is closed, so reopening within the token's lifetime
+// doesn't force a fresh sign-in.
+export async function getAccessTokenLocal(): Promise<StoredAccessToken | undefined> {
+  return (await getDB()).get('kv', 'accessToken') as Promise<StoredAccessToken | undefined>;
+}
+
+export async function putAccessTokenLocal(token: StoredAccessToken): Promise<void> {
+  await (await getDB()).put('kv', token, 'accessToken');
+}
+
+export async function clearAccessTokenLocal(): Promise<void> {
+  await (await getDB()).delete('kv', 'accessToken');
+}
+
 export async function getFileIdMap(): Promise<FileIdMap> {
   return ((await (await getDB()).get('kv', 'fileIds')) as FileIdMap) ?? {};
 }

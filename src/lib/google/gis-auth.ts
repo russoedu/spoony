@@ -1,7 +1,11 @@
 import { GOOGLE_CLIENT_ID, GOOGLE_SCOPES } from './config';
+import { getAccessTokenLocal, putAccessTokenLocal, clearAccessTokenLocal } from '@/lib/storage/db';
 
 // Loads Google Identity Services and manages OAuth access tokens (token model).
-// The access token lives in memory only; we never persist a refresh token.
+// The access token is also cached in IndexedDB (not just memory) so it survives
+// iOS killing the page's JS context when an installed PWA is closed and reopened
+// within the token's ~1h lifetime. We never persist a refresh token — the
+// implicit token-client flow doesn't issue one.
 
 const GIS_SRC = 'https://accounts.google.com/gsi/client';
 
@@ -76,6 +80,7 @@ export function requestAccessToken(interactive: boolean): Promise<string> {
         accessToken = resp.access_token;
         // expires_in is seconds; refresh a minute early.
         tokenExpiry = Date.now() + (Number(resp.expires_in) - 60) * 1000;
+        void putAccessTokenLocal({ accessToken, expiry: tokenExpiry });
         resolve(resp.access_token);
       };
       client.error_callback = (err) => {
@@ -94,6 +99,12 @@ export function requestAccessToken(interactive: boolean): Promise<string> {
 /** Returns a valid access token, refreshing silently if needed. */
 export async function ensureAccessToken(): Promise<string> {
   if (accessToken && Date.now() < tokenExpiry) return accessToken;
+  const stored = await getAccessTokenLocal();
+  if (stored && Date.now() < stored.expiry) {
+    accessToken = stored.accessToken;
+    tokenExpiry = stored.expiry;
+    return accessToken;
+  }
   return requestAccessToken(false);
 }
 
@@ -110,10 +121,11 @@ export async function fetchUserInfo(token: string): Promise<GoogleUser> {
   return { name: data.name ?? data.email ?? 'User', email: data.email ?? '', picture: data.picture };
 }
 
-export function revokeToken(): void {
+export async function revokeToken(): Promise<void> {
   if (accessToken && window.google?.accounts?.oauth2) {
     google.accounts.oauth2.revoke(accessToken, () => {});
   }
   accessToken = null;
   tokenExpiry = 0;
+  await clearAccessTokenLocal();
 }

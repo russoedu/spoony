@@ -64,7 +64,7 @@ export const createAuthSlice: StateCreator<StoreState, [], [], AuthSlice> = (set
   },
 
   signOut() {
-    revokeToken();
+    void revokeToken();
     sync.resetSyncState();
     localStorage.removeItem(CONNECTED_FLAG);
     set({
@@ -85,7 +85,7 @@ export const createAuthSlice: StateCreator<StoreState, [], [], AuthSlice> = (set
       // best-effort — still clear locally and sign out
     }
     await db.clearAllLocal();
-    revokeToken();
+    await revokeToken();
     sync.resetSyncState();
     localStorage.removeItem(CONNECTED_FLAG);
     set({

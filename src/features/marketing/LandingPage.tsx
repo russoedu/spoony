@@ -1,3 +1,5 @@
+import i18n, { SUPPORTED_LANGUAGES } from '@/providers/i18n';
+import { useStore } from '@/store/useStore';
 import {
   Badge,
   Box,
@@ -24,8 +26,6 @@ import {
   IconWifiOff,
 } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
-import { useStore } from '@/store/useStore';
-import i18n, { SUPPORTED_LANGUAGES } from '@/providers/i18n';
 
 function SignInButton({ size = 'md' }: { size?: string }) {
   const { t } = useTranslation();
@@ -86,7 +86,7 @@ export function LandingPage() {
   return (
     <Box>
       {/* Top bar */}
-      <Container size="lg" py="sm">
+      <Container  h="80" py="sm">
         <Group justify="space-between">
           <Image src="/full-logo.svg" alt="Spoony" h={40} w="auto" fit="contain" />
           <Group gap="sm">
