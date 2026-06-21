@@ -93,7 +93,9 @@
     "fixed": "fixo",
     "sectionScale": "Escalas",
     "sectionActivities": "Atividades",
-    "sectionNotes": "Notas"
+    "sectionNotes": "Notas",
+    "restoreDefaults": "Restaurar atividades padrão",
+    "restoreDone": "Atividades padrão restauradas."
   },
   "settings": {
     "title": "Configurações",
@@ -110,7 +112,13 @@
     "language": "idioma",
     "privacy": "política de privacidade",
     "about": "sobre o spoony",
-    "exportDone": "Seus dados foram baixados."
+    "exportDone": "Seus dados foram baixados.",
+    "deleteAccount": "excluir minha conta e dados",
+    "deleteTitle": "Excluir tudo?",
+    "deleteBody": "Isso exclui permanentemente todos os seus dados do Spoony do seu Google Drive e deste aparelho, e desconecta você. Não pode ser desfeito.",
+    "deleteConfirmLabel": "Digite seu e-mail para confirmar",
+    "deleteButton": "Excluir tudo",
+    "deleteDone": "Os dados da sua conta foram excluídos."
   },
   "install": {
     "cta": "Adicione o Spoony à tela inicial",
@@ -132,5 +140,39 @@
   "language": {
     "en": "English",
     "pt": "Português"
+  },
+  "marketing": {
+    "lead": "Planeje o seu dia com a energia que você realmente tem.",
+    "sub": "O Spoony é um diário gentil baseado na Teoria das Colheres — para pessoas autistas, com deficiência e com doenças crônicas que dosam o dia uma colher de cada vez.",
+    "openApp": "Abrir o Spoony",
+    "privacyBadge": "Privado e criptografado no seu próprio Google Drive",
+    "spoonTitle": "O que é uma \"colher\"?",
+    "spoonBody": "A Teoria das Colheres descreve a energia como um número limitado de colheres por dia. As tarefas do dia gastam colheres, e o descanso ou atividades prazerosas devolvem algumas. Quando as colheres acabam, acabaram — por isso planejar importa.",
+    "howTitle": "Como funciona",
+    "how1Title": "Comece pelas suas colheres",
+    "how1Body": "Toda manhã, registre com quantas colheres você acordou.",
+    "how2Title": "Acompanhe o que gasta e o que dá",
+    "how2Body": "Adicione o que custa energia e o que recupera — com uma estimativa do seu plano e o que você realmente usou.",
+    "how3Title": "Veja o seu saldo",
+    "how3Body": "Um total em tempo real mostra quantas colheres restam, para você se dosar e evitar a queda.",
+    "shotsTitle": "Uma espiada por dentro",
+    "shotDaily": "Seu dia num relance",
+    "shotConfig": "Do seu jeito",
+    "shotSettings": "Privado por princípio",
+    "featuresTitle": "Por que você vai gostar",
+    "featPrivateTitle": "Realmente privado",
+    "featPrivateBody": "Tudo é criptografado no seu aparelho e guardado em uma pasta oculta no seu próprio Google Drive. Sem servidor, sem anúncios, sem rastreio.",
+    "featOfflineTitle": "Funciona offline",
+    "featOfflineBody": "Registre a qualquer hora; sincroniza em segundo plano quando você volta a ficar online.",
+    "featCustomTitle": "Totalmente personalizável",
+    "featCustomBody": "Renomeie, reordene e agrupe suas atividades, escalas e notas conforme a sua vida.",
+    "featInstallTitle": "App instalável",
+    "featInstallBody": "Adicione à tela inicial e use em tela cheia como um app nativo.",
+    "featLangTitle": "No seu idioma",
+    "featLangBody": "Inglês e português hoje, com espaço fácil para mais.",
+    "featThemeTitle": "Claro ou escuro",
+    "featThemeBody": "Um visual calmo e amigável que segue o tema do seu sistema.",
+    "footerCta": "Pronto para acompanhar suas colheres?",
+    "footerNote": "Grátis • sem anúncios • seus dados são seus"
   }
 }

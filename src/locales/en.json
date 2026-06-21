@@ -93,7 +93,9 @@
     "fixed": "fixed",
     "sectionScale": "Scales",
     "sectionActivities": "Activities",
-    "sectionNotes": "Notes"
+    "sectionNotes": "Notes",
+    "restoreDefaults": "Restore default activities",
+    "restoreDone": "Default activities restored."
   },
   "settings": {
     "title": "Settings",
@@ -110,7 +112,13 @@
     "language": "language",
     "privacy": "privacy policy",
     "about": "about spoony app",
-    "exportDone": "Your data has been downloaded."
+    "exportDone": "Your data has been downloaded.",
+    "deleteAccount": "delete my account & data",
+    "deleteTitle": "Delete everything?",
+    "deleteBody": "This permanently deletes all your Spoony data from your Google Drive and this device, and signs you out. This cannot be undone.",
+    "deleteConfirmLabel": "Type your email to confirm",
+    "deleteButton": "Delete everything",
+    "deleteDone": "Your account data has been deleted."
   },
   "install": {
     "cta": "Add Spoony to your home screen",
@@ -131,5 +139,39 @@
   "language": {
     "en": "English",
     "pt": "Português"
+  },
+  "marketing": {
+    "lead": "Plan your day around the energy you actually have.",
+    "sub": "Spoony is a gentle daily tracker built on Spoon Theory — for autistic, disabled and chronically-ill people who pace their days one spoon at a time.",
+    "openApp": "Open Spoony",
+    "privacyBadge": "Private & encrypted on your own Google Drive",
+    "spoonTitle": "What's a \"spoon\"?",
+    "spoonBody": "Spoon Theory describes energy as a limited number of spoons each day. Everyday tasks cost spoons, and rest or joyful activities give some back. When the spoons run out, they're out — so planning matters.",
+    "howTitle": "How it works",
+    "how1Title": "Start with your spoons",
+    "how1Body": "Each morning, log how many spoons you woke up with.",
+    "how2Title": "Track takes & gives",
+    "how2Body": "Add what costs energy and what restores it — with an estimate for your plan and what you actually used.",
+    "how3Title": "Watch your balance",
+    "how3Body": "A live total shows how many spoons you have left, so you can pace yourself and avoid the crash.",
+    "shotsTitle": "A peek inside",
+    "shotDaily": "Your day at a glance",
+    "shotConfig": "Make it yours",
+    "shotSettings": "Private by design",
+    "featuresTitle": "Why you'll love it",
+    "featPrivateTitle": "Truly private",
+    "featPrivateBody": "Everything is encrypted on your device and stored in a hidden folder on your own Google Drive. No server, no ads, no tracking.",
+    "featOfflineTitle": "Works offline",
+    "featOfflineBody": "Log anytime; it syncs in the background when you're back online.",
+    "featCustomTitle": "Fully customisable",
+    "featCustomBody": "Rename, reorder and group your activities, scales and notes to match your life.",
+    "featInstallTitle": "Installable app",
+    "featInstallBody": "Add it to your home screen and it runs full-screen like a native app.",
+    "featLangTitle": "Your language",
+    "featLangBody": "English and Portuguese today, with easy room for more.",
+    "featThemeTitle": "Light or dark",
+    "featThemeBody": "A calm, friendly look that follows your system theme.",
+    "footerCta": "Ready to track your spoons?",
+    "footerNote": "Free • no ads • your data stays yours"
   }
 }

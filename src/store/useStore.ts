@@ -42,6 +42,7 @@ interface StoreState {
   signIn: () => Promise<void>;
   restoreSession: () => Promise<void>;
   signOut: () => void;
+  deleteAllData: () => Promise<void>;
 
   setDate: (date: string) => Promise<void>;
   updateDay: (mutate: (draft: DayEntry) => void) => void;
@@ -51,6 +52,9 @@ interface StoreState {
   updateActivity: (id: string, patch: Partial<Activity>) => void;
   removeActivity: (id: string) => void;
   cycleActivityType: (id: string) => void;
+  restoreDefaultActivities: () => void;
+  /** Count of built-in defaults that have been removed (for the restore button). */
+  missingDefaultsCount: () => number;
 
   setTheme: (theme: ThemePreference) => void;
   setLanguage: (language: string) => void;
@@ -182,6 +186,28 @@ export const useStore = create<StoreState>((set, get) => {
       });
     },
 
+    async deleteAllData() {
+      // Wipe the hidden Drive folder (key, config, all days), then the local cache.
+      try {
+        await sync.deleteAllRemote();
+      } catch {
+        // best-effort — still clear locally and sign out
+      }
+      await db.clearAllLocal();
+      revokeToken();
+      sync.resetSyncState();
+      localStorage.removeItem(CONNECTED_FLAG);
+      set({
+        authStatus: 'idle',
+        user: null,
+        config: null,
+        ready: false,
+        firstRun: false,
+        currentDay: null,
+        saveStatus: 'idle',
+      });
+    },
+
     async setDate(date) {
       const config = get().config;
       if (!config) return;
@@ -257,6 +283,25 @@ export const useStore = create<StoreState>((set, get) => {
           return a;
         }),
       });
+    },
+
+    restoreDefaultActivities() {
+      const config = get().config;
+      if (!config) return;
+      const existing = new Set(config.activities.map((a) => a.id));
+      const missing = createDefaultActivities().filter((a) => !existing.has(a.id));
+      if (missing.length === 0) return;
+      commitConfig({
+        ...config,
+        activities: normalizeActivities([...config.activities, ...missing]),
+      });
+    },
+
+    missingDefaultsCount() {
+      const config = get().config;
+      if (!config) return 0;
+      const existing = new Set(config.activities.map((a) => a.id));
+      return createDefaultActivities().filter((a) => !existing.has(a.id)).length;
     },
 
     setTheme(theme) {

@@ -12,7 +12,14 @@ import {
   Text,
   Title,
 } from '@mantine/core';
-import { IconCheck, IconChevronDown, IconChevronUp, IconPlus } from '@tabler/icons-react';
+import {
+  IconCheck,
+  IconChevronDown,
+  IconChevronUp,
+  IconPlus,
+  IconRestore,
+} from '@tabler/icons-react';
+import { notifications } from '@mantine/notifications';
 import {
   DndContext,
   PointerSensor,
@@ -43,7 +50,16 @@ export function ActivitiesConfigScreen() {
   const removeActivity = useStore((s) => s.removeActivity);
   const cycleActivityType = useStore((s) => s.cycleActivityType);
   const addActivity = useStore((s) => s.addActivity);
+  const restoreDefaultActivities = useStore((s) => s.restoreDefaultActivities);
+  const missingDefaultsCount = useStore((s) => s.missingDefaultsCount);
   const [legendOpen, setLegendOpen] = useState(false);
+
+  const missingDefaults = missingDefaultsCount();
+
+  const onRestore = () => {
+    restoreDefaultActivities();
+    notifications.show({ message: t('config.restoreDone'), color: 'spoon' });
+  };
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -92,6 +108,17 @@ export function ActivitiesConfigScreen() {
       <Text size="sm" c="dimmed">
         {t('config.instructions')}
       </Text>
+
+      {missingDefaults > 0 && (
+        <Button
+          variant="default"
+          size="xs"
+          leftSection={<IconRestore size={14} />}
+          onClick={onRestore}
+        >
+          {t('config.restoreDefaults')}
+        </Button>
+      )}
 
       {/* Wake-up spoons: fixed, read-only, always first. */}
       <Card withBorder radius="md" padding="sm" bg="var(--mantine-color-grape-light)">

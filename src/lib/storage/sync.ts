@@ -178,3 +178,15 @@ export async function syncPending(getConfig: () => AppConfig | null): Promise<bo
 export function resetSyncState(): void {
   cryptoKey = null;
 }
+
+/** Permanently delete every file in the app's hidden Drive folder. */
+export async function deleteAllRemote(): Promise<void> {
+  const files = await drive.listAppDataFiles();
+  for (const file of files) {
+    try {
+      await drive.deleteFile(file.id);
+    } catch {
+      // best-effort; continue deleting the rest
+    }
+  }
+}
