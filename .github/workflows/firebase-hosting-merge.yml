@@ -15,7 +15,10 @@ jobs:
           node-version: 22
           cache: npm
 
-      - run: npm ci
+      # `npm install` (not `npm ci`): the lockfile is generated on Windows and
+      # omits some Linux-only transitive optional deps of Vite's Rolldown wasm
+      # binding, which makes strict `npm ci` fail on Linux runners.
+      - run: npm install --no-audit --no-fund
 
       - run: npm run lint
 
