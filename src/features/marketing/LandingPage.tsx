@@ -31,6 +31,7 @@ function SignInButton({ size = 'md' }: { size?: string }) {
   const { t } = useTranslation();
   const signIn = useStore((s) => s.signIn);
   const status = useStore((s) => s.authStatus);
+  const authError = useStore((s) => s.authError);
   return (
     <Stack align="center" gap={6}>
       <Button
@@ -43,9 +44,16 @@ function SignInButton({ size = 'md' }: { size?: string }) {
         {t('auth.signIn')}
       </Button>
       {status === 'error' && (
-        <Badge color="red" variant="filled">
-          {t('auth.error')}
-        </Badge>
+        <Stack align="center" gap={4} maw={320}>
+          <Badge color="red" variant="filled">
+            {t('auth.error')}
+          </Badge>
+          {authError && (
+            <Text size="xs" c="red" ta="center" style={{ wordBreak: 'break-word' }}>
+              {authError}
+            </Text>
+          )}
+        </Stack>
       )}
     </Stack>
   );

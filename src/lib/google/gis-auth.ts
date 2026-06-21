@@ -66,7 +66,11 @@ export function requestAccessToken(interactive: boolean): Promise<string> {
     const run = (client: MutableTokenClient) => {
       client.callback = (resp) => {
         if (resp.error) {
-          reject(new Error(resp.error));
+          // Surface the full response (error + description) so the real cause is
+          // visible in the console, and propagate a readable message to the UI.
+          console.error('[gis] token error', resp);
+          const detail = (resp as { error_description?: string }).error_description;
+          reject(new Error(detail ? `${resp.error}: ${detail}` : resp.error));
           return;
         }
         accessToken = resp.access_token;
@@ -74,7 +78,11 @@ export function requestAccessToken(interactive: boolean): Promise<string> {
         tokenExpiry = Date.now() + (Number(resp.expires_in) - 60) * 1000;
         resolve(resp.access_token);
       };
-      client.error_callback = (err) => reject(new Error(err.type || 'oauth_error'));
+      client.error_callback = (err) => {
+        // e.g. popup_closed, popup_failed_to_open — the type names the cause.
+        console.error('[gis] token error_callback', err);
+        reject(new Error(err.type || 'oauth_error'));
+      };
       client.requestAccessToken({ prompt: interactive ? 'consent' : '' });
     };
     // When already preloaded, call synchronously to preserve the click gesture.
