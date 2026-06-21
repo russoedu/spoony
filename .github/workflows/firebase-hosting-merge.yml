@@ -1,0 +1,53 @@
+name: CI / Deploy (live)
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # `npm install` (not `npm ci`): the lockfile is generated on Windows and
+      # omits some Linux-only transitive optional deps of Vite's Rolldown wasm
+      # binding, which makes strict `npm ci` fail on Linux runners.
+      - run: npm install --no-audit --no-fund
+
+      - run: npm run lint
+
+      - run: npm test
+
+      - run: npm run build
+        env:
+          # Optional override; falls back to the baked-in client ID if unset.
+          VITE_GOOGLE_CLIENT_ID: ${{ vars.VITE_GOOGLE_CLIENT_ID }}
+
+      # Deploy only when the service-account secret has been configured, so CI
+      # stays green before CD is wired up. Secrets can't be read in `if:`
+      # directly, so surface presence via a step output.
+      - name: Check deploy credentials
+        id: creds
+        env:
+          SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SPOONY_500006 }}
+        run: |
+          if [ -n "$SA" ]; then echo "present=true" >> "$GITHUB_OUTPUT"; else echo "present=false" >> "$GITHUB_OUTPUT"; fi
+
+      - name: Deploy to Firebase Hosting (live)
+        if: steps.creds.outputs.present == 'true'
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SPOONY_500006 }}
+          channelId: live
+          projectId: spoony-500006
+
+      - name: Deploy skipped
+        if: steps.creds.outputs.present != 'true'
+        run: echo "::notice::Deploy skipped — set the FIREBASE_SERVICE_ACCOUNT_SPOONY_500006 secret to enable automatic deploys."

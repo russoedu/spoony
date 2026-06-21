@@ -1,0 +1,128 @@
+{
+  "app": {
+    "name": "spoony",
+    "tagline": "diário de energia"
+  },
+  "common": {
+    "done": "Concluir",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "delete": "Excluir",
+    "add": "Adicionar",
+    "edit": "Editar",
+    "close": "Fechar",
+    "back": "Voltar",
+    "today": "Hoje",
+    "loading": "Carregando…",
+    "retry": "Tentar novamente"
+  },
+  "auth": {
+    "connectTitle": "Conecte sua Conta Google",
+    "encryptedNote": "Todos os dados serão salvos criptografados no seu Google Drive",
+    "signIn": "Entrar com o Google",
+    "signingIn": "Entrando…",
+    "connecting": "Tela de conexão da Conta Google…",
+    "signOut": "Sair",
+    "error": "Falha ao entrar. Tente novamente.",
+    "retry": "Tentar novamente"
+  },
+  "nav": {
+    "daily": "Diário",
+    "history": "Histórico",
+    "settings": "Configurações"
+  },
+  "activity": {
+    "spoons": "Colheres ao acordar",
+    "pain": "DOR 0-10",
+    "getOutOfBed": "Sair da cama",
+    "toilet": "Ir ao banheiro",
+    "getReady": "Se arrumar",
+    "eat": "Comer",
+    "shower": "Banho",
+    "cook": "Cozinhar",
+    "clean": "Limpar",
+    "physiotherapy": "Fisio",
+    "exercise": "Exerc. / caminhar / bike",
+    "relax": "Relax / meditação / soneca",
+    "activities": "Ativ. / Lego / quebra-cabeça",
+    "therapy": "Terapia",
+    "journal": "Journal",
+    "hyperfocus": "Hiperfoco",
+    "wokeUpFeel": "Como acordei",
+    "slept": "Como dormi",
+    "plan": "Plano",
+    "need": "Preciso",
+    "want": "Quero"
+  },
+  "activityType": {
+    "wakeup": "Colheres com que você acordou",
+    "takes": "Esta atividade gasta colheres",
+    "gives": "Esta atividade dá colheres",
+    "numeric": "Uma escala 0-10 (apenas registro)",
+    "note": "Um campo de anotação"
+  },
+  "dailyLog": {
+    "wokeUpAt": "Acordei às",
+    "estimated": "Estimado",
+    "used": "Usado",
+    "balancePlanned": "Saldo previsto",
+    "balanceUsed": "Colheres restantes",
+    "spoonsWokeUp": "Acordei com",
+    "otherActivities": "Outras atividades",
+    "addOther": "Adicionar atividade…",
+    "otherLabel": "Nome da atividade",
+    "feelSection": "Como me senti",
+    "notePlaceholder": "Escreva aqui…",
+    "autoSaving": "salvando…",
+    "saved": "salvo",
+    "offline": "offline — salvo neste aparelho"
+  },
+  "config": {
+    "title": "Atividades",
+    "instructions": "Configure suas atividades (você pode editar depois nas opções). Clique para editar o texto, arraste para cima/baixo para reordenar e arraste para a esquerda para excluir. Mude o tipo da atividade clicando no símbolo ao lado do botão de arrastar.",
+    "addItem": "adicionar item",
+    "defaultEstimated": "Estimado padrão",
+    "defaultUsed": "Usado padrão",
+    "scaleMax": "Máximo da escala",
+    "editLabel": "Nome da atividade",
+    "typeHint": "Toque no ícone para mudar o tipo",
+    "deleteConfirm": "Excluir esta atividade?",
+    "legendTitle": "Legenda"
+  },
+  "settings": {
+    "title": "Configurações",
+    "editActivities": "editar lista de atividades",
+    "exportData": "exportar meus dados",
+    "reports": "relatórios",
+    "reportsFuture": "recurso futuro",
+    "theme": "tema",
+    "themeLight": "claro",
+    "themeDark": "escuro",
+    "themeSystem": "sistema",
+    "language": "idioma",
+    "privacy": "política de privacidade",
+    "about": "sobre o spoony",
+    "exportDone": "Seus dados foram baixados."
+  },
+  "install": {
+    "cta": "Adicione o Spoony à tela inicial",
+    "install": "Instalar",
+    "dismiss": "Agora não",
+    "iosTitle": "Instalar o Spoony",
+    "iosInstructions": "Toque no botão Compartilhar e escolha \"Adicionar à Tela de Início\"."
+  },
+  "about": {
+    "title": "Sobre o Spoony",
+    "body": "O Spoony é um diário de energia baseado na Teoria das Colheres. Seus dados ficam criptografados em uma pasta privada no seu próprio Google Drive — ninguém mais pode lê-los.",
+    "version": "Versão"
+  },
+  "privacy": {
+    "title": "Política de privacidade",
+    "body": "O Spoony guarda todos os seus registros em uma pasta oculta e privada no seu próprio Google Drive, criptografados no seu aparelho antes do envio. Não temos servidor e nunca recebemos uma cópia dos seus dados. Revogar o acesso nas configurações da sua Conta Google interrompe a sincronização.",
+    "body2": ""
+  },
+  "language": {
+    "en": "English",
+    "pt": "Português"
+  }
+}

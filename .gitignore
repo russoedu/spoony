@@ -141,3 +141,13 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Google OAuth client secret (never commit)
+client_secret*.json
+*.pem
+dev-dist/
+
+# Playwright MCP verification artifacts
+.playwright-mcp/
+*.png
+!public/**/*.png
