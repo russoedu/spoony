@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Activity, ActivityType, AppConfig, DayEntry, DayValue, ThemePreference } from '@/types';
+import type { Activity, AppConfig, DayEntry, DayValue, ThemePreference } from '@/types';
 import { createDefaultActivities, SCHEMA_VERSION } from '@/data/defaultActivities';
 import {
   ensureAccessToken,
@@ -11,7 +11,14 @@ import {
 import * as sync from '@/lib/storage/sync';
 import * as db from '@/lib/storage/db';
 import { createEmptyDay, reconcileDay, todayISO } from '@/lib/day';
-import i18n from '@/providers/i18n';
+import {
+  defaultTypeForGroup,
+  normalizeActivities,
+  type GroupId,
+} from '@/lib/activityGroups';
+import i18n, { SUPPORTED_LANGUAGES } from '@/providers/i18n';
+
+type AddableGroup = Exclude<GroupId, 'wakeup'>;
 
 export type AuthStatus = 'idle' | 'restoring' | 'connecting' | 'authed' | 'error';
 export type SaveStatus = 'idle' | 'saving' | 'saved' | 'offline';
@@ -23,6 +30,9 @@ interface StoreState {
 
   config: AppConfig | null;
   ready: boolean;
+  /** True right after a brand-new config is created (first ever sign-in). */
+  firstRun: boolean;
+  clearFirstRun: () => void;
 
   currentDate: string;
   currentDay: DayEntry | null;
@@ -37,7 +47,7 @@ interface StoreState {
   updateDay: (mutate: (draft: DayEntry) => void) => void;
 
   setActivities: (activities: Activity[]) => void;
-  addActivity: (type: ActivityType) => void;
+  addActivity: (group: AddableGroup) => void;
   updateActivity: (id: string, patch: Partial<Activity>) => void;
   removeActivity: (id: string) => void;
   cycleActivityType: (id: string) => void;
@@ -48,15 +58,20 @@ interface StoreState {
   setOnline: (online: boolean) => void;
 }
 
+/** The browser-detected language, narrowed to a supported one (e.g. pt-BR -> pt). */
+function resolveLanguage(): string {
+  const base = (i18n.resolvedLanguage || i18n.language || 'en').split('-')[0];
+  return (SUPPORTED_LANGUAGES as readonly string[]).includes(base) ? base : 'en';
+}
+
 function createDefaultConfig(): AppConfig {
   return {
     activities: createDefaultActivities(),
-    settings: { language: i18n.language || 'en', theme: 'system' },
+    settings: { language: resolveLanguage(), theme: 'system' },
     schemaVersion: SCHEMA_VERSION,
   };
 }
 
-const CYCLE_ORDER: ActivityType[] = ['takes', 'gives', 'numeric', 'note'];
 const CONNECTED_FLAG = 'spoony.connected';
 
 let saveTimer: ReturnType<typeof setTimeout> | null = null;
@@ -91,11 +106,13 @@ export const useStore = create<StoreState>((set, get) => {
     await sync.bootstrapKey();
     let config = await sync.loadConfigFromDrive();
     if (!config) config = (await db.getConfigLocal()) ?? null;
+    let firstRun = false;
     if (!config) {
       config = createDefaultConfig();
       await sync.saveConfig(config);
+      firstRun = true; // brand-new user — send them to the activities editor
     }
-    set({ config });
+    set({ config, firstRun });
     applyLanguage(config.settings.language);
     set({ ready: true });
     await get().setDate(todayISO());
@@ -112,6 +129,8 @@ export const useStore = create<StoreState>((set, get) => {
     authError: null,
     config: null,
     ready: false,
+    firstRun: false,
+    clearFirstRun: () => set({ firstRun: false }),
     currentDate: todayISO(),
     currentDay: null,
     saveStatus: 'idle',
@@ -185,16 +204,17 @@ export const useStore = create<StoreState>((set, get) => {
     setActivities(activities) {
       const config = get().config;
       if (!config) return;
-      const reordered = activities.map((a, i) => ({ ...a, order: i }));
-      commitConfig({ ...config, activities: reordered });
+      // Take the caller's array order as the new order, then keep groups contiguous.
+      const withOrder = activities.map((a, i) => ({ ...a, order: i }));
+      commitConfig({ ...config, activities: normalizeActivities(withOrder) });
     },
 
-    addActivity(type) {
+    addActivity(group) {
       const config = get().config;
       if (!config) return;
-      const id = `custom-${Date.now().toString(36)}`;
+      const type = defaultTypeForGroup(group as AddableGroup);
       const activity: Activity = {
-        id,
+        id: `custom-${Date.now().toString(36)}`,
         type,
         label: '',
         order: config.activities.length,
@@ -202,7 +222,7 @@ export const useStore = create<StoreState>((set, get) => {
         builtIn: false,
         ...(type === 'numeric' ? { numericMax: 10 } : {}),
       };
-      commitConfig({ ...config, activities: [...config.activities, activity] });
+      commitConfig({ ...config, activities: normalizeActivities([...config.activities, activity]) });
     },
 
     updateActivity(id, patch) {
@@ -219,12 +239,12 @@ export const useStore = create<StoreState>((set, get) => {
       if (!config) return;
       commitConfig({
         ...config,
-        activities: config.activities
-          .filter((a) => a.id !== id)
-          .map((a, i) => ({ ...a, order: i })),
+        activities: normalizeActivities(config.activities.filter((a) => a.id !== id)),
       });
     },
 
+    // Within the "activities" group the icon toggles takes <-> gives only.
+    // Scale and note items have a fixed type.
     cycleActivityType(id) {
       const config = get().config;
       if (!config) return;
@@ -232,11 +252,9 @@ export const useStore = create<StoreState>((set, get) => {
         ...config,
         activities: config.activities.map((a) => {
           if (a.id !== id) return a;
-          // wakeup is unique and not part of the cycle.
-          if (a.type === 'wakeup') return a;
-          const idx = CYCLE_ORDER.indexOf(a.type);
-          const next = CYCLE_ORDER[(idx + 1) % CYCLE_ORDER.length];
-          return { ...a, type: next, ...(next === 'numeric' ? { numericMax: a.numericMax ?? 10 } : {}) };
+          if (a.type === 'takes') return { ...a, type: 'gives' };
+          if (a.type === 'gives') return { ...a, type: 'takes' };
+          return a;
         }),
       });
     },

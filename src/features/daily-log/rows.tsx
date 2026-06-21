@@ -41,7 +41,7 @@ export function CountedRow({ activity, value, onChange }: RowProps<CountedValue>
         />
         <NumberInput
           size="sm"
-          label={t('dailyLog.used')}
+          label={activity.type === 'gives' ? t('dailyLog.gained') : t('dailyLog.used')}
           min={0}
           value={value.used ?? ''}
           onChange={(v) => onChange({ ...value, used: toNumber(v) })}

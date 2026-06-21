@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Center, Loader } from '@mantine/core';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useStore } from '@/store/useStore';
 import { ThemeController } from '@/components/ThemeController';
 import { InstallPrompt } from '@/components/InstallPrompt';
@@ -55,6 +55,7 @@ export function App() {
   return (
     <>
       <ThemeController />
+      <FirstRunRedirect />
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<DailyLogScreen />} />
@@ -66,4 +67,18 @@ export function App() {
       <InstallPrompt />
     </>
   );
+}
+
+/** On the very first sign-in, send the user straight to the activities editor. */
+function FirstRunRedirect() {
+  const navigate = useNavigate();
+  const firstRun = useStore((s) => s.firstRun);
+  const clearFirstRun = useStore((s) => s.clearFirstRun);
+  useEffect(() => {
+    if (firstRun) {
+      navigate('/settings/activities');
+      clearFirstRun();
+    }
+  }, [firstRun, navigate, clearFirstRun]);
+  return null;
 }

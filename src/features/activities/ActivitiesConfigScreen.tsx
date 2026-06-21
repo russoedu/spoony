@@ -1,6 +1,18 @@
 import { useMemo, useState } from 'react';
-import { ActionIcon, Button, Group, Stack, Text, TextInput, Title } from '@mantine/core';
-import { IconCheck, IconPlus } from '@tabler/icons-react';
+import {
+  Affix,
+  Button,
+  Card,
+  Collapse,
+  Container,
+  Divider,
+  Group,
+  Paper,
+  Stack,
+  Text,
+  Title,
+} from '@mantine/core';
+import { IconCheck, IconChevronDown, IconChevronUp, IconPlus } from '@tabler/icons-react';
 import {
   DndContext,
   PointerSensor,
@@ -10,16 +22,14 @@ import {
   useSensors,
   type DragEndEvent,
 } from '@dnd-kit/core';
-import {
-  SortableContext,
-  arrayMove,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
+import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useStore } from '@/store/useStore';
 import { ActivityIcon } from '@/components/ActivityIcon';
-import type { ActivityType } from '@/types';
+import { activityLabel } from '@/providers/i18n';
+import type { Activity, ActivityType } from '@/types';
+import { groupActivities, type GroupId } from '@/lib/activityGroups';
 import { SortableActivityRow } from './SortableActivityRow';
 
 const LEGEND_TYPES: ActivityType[] = ['wakeup', 'takes', 'gives', 'numeric', 'note'];
@@ -33,42 +43,48 @@ export function ActivitiesConfigScreen() {
   const removeActivity = useStore((s) => s.removeActivity);
   const cycleActivityType = useStore((s) => s.cycleActivityType);
   const addActivity = useStore((s) => s.addActivity);
-
-  const [newLabel, setNewLabel] = useState('');
+  const [legendOpen, setLegendOpen] = useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 6 } })
   );
 
-  const sorted = useMemo(
-    () => [...(config?.activities ?? [])].sort((a, b) => a.order - b.order),
+  const grouped = useMemo(
+    () => groupActivities(config?.activities ?? []),
     [config]
   );
 
-  const onDragEnd = (e: DragEndEvent) => {
+  // Reorder within one group, then rebuild the full list (groups stay contiguous).
+  const reorder = (group: Exclude<GroupId, 'wakeup'>) => (e: DragEndEvent) => {
     const { active, over } = e;
     if (!over || active.id === over.id) return;
-    const oldIndex = sorted.findIndex((a) => a.id === active.id);
-    const newIndex = sorted.findIndex((a) => a.id === over.id);
-    setActivities(arrayMove(sorted, oldIndex, newIndex));
+    const items = grouped[group];
+    const oldIndex = items.findIndex((a) => a.id === active.id);
+    const newIndex = items.findIndex((a) => a.id === over.id);
+    const next = arrayMove(items, oldIndex, newIndex);
+    const full: Activity[] = [
+      ...(grouped.wakeup ? [grouped.wakeup] : []),
+      ...(group === 'scale' ? next : grouped.scale),
+      ...(group === 'activity' ? next : grouped.activity),
+      ...(group === 'note' ? next : grouped.note),
+    ];
+    setActivities(full);
   };
 
-  const addItem = () => {
-    addActivity('takes');
-    if (newLabel.trim()) {
-      // The new activity is the last one; set its label.
-      const last = useStore.getState().config?.activities.at(-1);
-      if (last) updateActivity(last.id, { label: newLabel.trim() });
-    }
-    setNewLabel('');
-  };
+  const wakeupLabel = grouped.wakeup
+    ? activityLabel(t, grouped.wakeup.id, grouped.wakeup.label)
+    : t('activity.spoons');
 
   return (
-    <Stack gap="md" pb={120}>
+    <Stack gap="md" pb={90}>
       <Group justify="space-between">
         <Title order={3}>{t('config.title')}</Title>
-        <Button variant="subtle" leftSection={<IconCheck size={16} />} onClick={() => navigate('/settings')}>
+        <Button
+          variant="light"
+          leftSection={<IconCheck size={16} />}
+          onClick={() => navigate('/settings')}
+        >
           {t('common.done')}
         </Button>
       </Group>
@@ -77,44 +93,139 @@ export function ActivitiesConfigScreen() {
         {t('config.instructions')}
       </Text>
 
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-        <SortableContext items={sorted.map((a) => a.id)} strategy={verticalListSortingStrategy}>
+      {/* Wake-up spoons: fixed, read-only, always first. */}
+      <Card withBorder radius="md" padding="sm" bg="var(--mantine-color-grape-light)">
+        <Group gap="xs" wrap="nowrap">
+          <ActivityIcon type="wakeup" />
+          <Text fw={600} style={{ flex: 1 }}>
+            {wakeupLabel}
+          </Text>
+          <Text size="xs" c="dimmed">
+            {t('config.fixed')}
+          </Text>
+        </Group>
+      </Card>
+
+      <Section
+        titleKey="config.sectionScale"
+        group="scale"
+        items={grouped.scale}
+        canToggleType={false}
+        sensors={sensors}
+        onReorder={reorder('scale')}
+        onAdd={() => addActivity('scale')}
+        onCycleType={cycleActivityType}
+        onPatch={updateActivity}
+        onRemove={removeActivity}
+      />
+      <Section
+        titleKey="config.sectionActivities"
+        group="activity"
+        items={grouped.activity}
+        canToggleType
+        sensors={sensors}
+        onReorder={reorder('activity')}
+        onAdd={() => addActivity('activity')}
+        onCycleType={cycleActivityType}
+        onPatch={updateActivity}
+        onRemove={removeActivity}
+      />
+      <Section
+        titleKey="config.sectionNotes"
+        group="note"
+        items={grouped.note}
+        canToggleType={false}
+        sensors={sensors}
+        onReorder={reorder('note')}
+        onAdd={() => addActivity('note')}
+        onCycleType={cycleActivityType}
+        onPatch={updateActivity}
+        onRemove={removeActivity}
+      />
+
+      {/* Fixed bottom legend with a drawer effect. */}
+      <Affix position={{ bottom: 0, left: 0, right: 0 }}>
+        <Paper
+          withBorder
+          radius={0}
+          shadow="md"
+          style={{ borderLeft: 'none', borderRight: 'none', borderBottom: 'none' }}
+        >
+          <Container>
+            <Group
+              justify="space-between"
+              px="md"
+              py="xs"
+              onClick={() => setLegendOpen((o) => !o)}
+              style={{ cursor: 'pointer' }}
+            >
+              <Text fw={600}>{t('config.legendTitle')}</Text>
+              {legendOpen ? <IconChevronDown size={18} /> : <IconChevronUp size={18} />}
+            </Group>
+            <Collapse expanded={legendOpen}>
+              <Stack gap={6} px="md" pb="md">
+                {LEGEND_TYPES.map((type) => (
+                  <Group key={type} gap="xs" wrap="nowrap">
+                    <ActivityIcon type={type} />
+                    <Text size="sm">{t(`activityType.${type}`)}</Text>
+                  </Group>
+                ))}
+              </Stack>
+            </Collapse>
+          </Container>
+        </Paper>
+      </Affix>
+    </Stack>
+  );
+}
+
+interface SectionProps {
+  titleKey: string;
+  group: Exclude<GroupId, 'wakeup'>;
+  items: Activity[];
+  canToggleType: boolean;
+  sensors: ReturnType<typeof useSensors>;
+  onReorder: (e: DragEndEvent) => void;
+  onAdd: () => void;
+  onCycleType: (id: string) => void;
+  onPatch: (id: string, patch: Partial<Activity>) => void;
+  onRemove: (id: string) => void;
+}
+
+function Section({
+  titleKey,
+  items,
+  canToggleType,
+  sensors,
+  onReorder,
+  onAdd,
+  onCycleType,
+  onPatch,
+  onRemove,
+}: SectionProps) {
+  const { t } = useTranslation();
+  return (
+    <Stack gap="xs">
+      <Divider label={t(titleKey)} labelPosition="left" />
+      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onReorder}>
+        <SortableContext items={items.map((a) => a.id)} strategy={verticalListSortingStrategy}>
           <Stack gap="xs">
-            {sorted.map((activity) => (
+            {items.map((activity) => (
               <SortableActivityRow
                 key={activity.id}
                 activity={activity}
-                onCycleType={cycleActivityType}
-                onPatch={updateActivity}
-                onRemove={removeActivity}
+                canToggleType={canToggleType}
+                onCycleType={onCycleType}
+                onPatch={onPatch}
+                onRemove={onRemove}
               />
             ))}
           </Stack>
         </SortableContext>
       </DndContext>
-
-      <Group gap="xs" wrap="nowrap">
-        <TextInput
-          style={{ flex: 1 }}
-          placeholder={t('config.addItem')}
-          value={newLabel}
-          onChange={(e) => setNewLabel(e.currentTarget.value)}
-          onKeyDown={(e) => e.key === 'Enter' && addItem()}
-        />
-        <ActionIcon size="lg" aria-label={t('common.add')} onClick={addItem}>
-          <IconPlus />
-        </ActionIcon>
-      </Group>
-
-      <Stack gap={6} mt="md">
-        <Text fw={600}>{t('config.legendTitle')}</Text>
-        {LEGEND_TYPES.map((type) => (
-          <Group key={type} gap="xs" wrap="nowrap">
-            <ActivityIcon type={type} />
-            <Text size="sm">{t(`activityType.${type}`)}</Text>
-          </Group>
-        ))}
-      </Stack>
+      <Button variant="light" size="xs" leftSection={<IconPlus size={14} />} onClick={onAdd}>
+        {t('config.addItem')}
+      </Button>
     </Stack>
   );
 }

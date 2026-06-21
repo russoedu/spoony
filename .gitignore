@@ -151,3 +151,7 @@ dev-dist/
 .playwright-mcp/
 *.png
 !public/**/*.png
+
+# Firebase MCP / agent skill artifacts
+.agents/
+skills-lock.json
