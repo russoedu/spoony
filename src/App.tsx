@@ -1,16 +1,16 @@
-import { useEffect } from 'react';
-import { Center, Loader } from '@mantine/core';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import { useStore } from '@/store/useStore';
-import { preloadGis } from '@/lib/google/gis-auth';
-import { ThemeController } from '@/components/ThemeController';
 import { InstallPrompt } from '@/components/InstallPrompt';
 import { Layout } from '@/components/Layout';
-import { LandingPage } from '@/features/marketing/LandingPage';
+import { ThemeController } from '@/components/ThemeController';
+import { ActivitiesConfigScreen } from '@/features/activities/ActivitiesConfigScreen';
 import { DailyLogScreen } from '@/features/daily-log/DailyLogScreen';
 import { HistoryScreen } from '@/features/history/HistoryScreen';
+import { LandingPage } from '@/features/marketing/LandingPage';
 import { SettingsScreen } from '@/features/settings/SettingsScreen';
-import { ActivitiesConfigScreen } from '@/features/activities/ActivitiesConfigScreen';
+import { preloadGis } from '@/lib/google/gis-auth';
+import { useStore } from '@/store/useStore';
+import { Center, Loader } from '@mantine/core';
+import { useEffect } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 
 export function App() {
   const authStatus = useStore((s) => s.authStatus);
@@ -43,7 +43,7 @@ export function App() {
   }
 
   if (authStatus !== 'authed') {
-    return <LandingPage />;
+    return <LandingPage />
   }
 
   if (!ready) {

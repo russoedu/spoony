@@ -1,0 +1,75 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {},
+	"launch": {
+		"configurations": [
+			{
+				"type": "pwa-node",
+				"request": "launch",
+				"name": "npm: dev",
+				"runtimeExecutable": "npm",
+				"runtimeArgs": ["run", "dev"],
+				"cwd": "${workspaceFolder}",
+				"console": "integratedTerminal"
+			},
+			{
+				"type": "pwa-node",
+				"request": "launch",
+				"name": "npm: build",
+				"runtimeExecutable": "npm",
+				"runtimeArgs": ["run", "build"],
+				"cwd": "${workspaceFolder}",
+				"console": "integratedTerminal"
+			},
+			{
+				"type": "pwa-node",
+				"request": "launch",
+				"name": "npm: preview",
+				"runtimeExecutable": "npm",
+				"runtimeArgs": ["run", "preview"],
+				"cwd": "${workspaceFolder}",
+				"console": "integratedTerminal"
+			},
+			{
+				"type": "pwa-node",
+				"request": "launch",
+				"name": "npm: lint",
+				"runtimeExecutable": "npm",
+				"runtimeArgs": ["run", "lint"],
+				"cwd": "${workspaceFolder}",
+				"console": "integratedTerminal"
+			},
+			{
+				"type": "pwa-node",
+				"request": "launch",
+				"name": "npm: format",
+				"runtimeExecutable": "npm",
+				"runtimeArgs": ["run", "format"],
+				"cwd": "${workspaceFolder}",
+				"console": "integratedTerminal"
+			},
+			{
+				"type": "pwa-node",
+				"request": "launch",
+				"name": "npm: test",
+				"runtimeExecutable": "npm",
+				"runtimeArgs": ["run", "test"],
+				"cwd": "${workspaceFolder}",
+				"console": "integratedTerminal"
+			},
+			{
+				"type": "pwa-node",
+				"request": "launch",
+				"name": "npm: test:watch",
+				"runtimeExecutable": "npm",
+				"runtimeArgs": ["run", "test:watch"],
+				"cwd": "${workspaceFolder}",
+				"console": "integratedTerminal"
+			}
+		]
+	}
+}

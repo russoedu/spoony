@@ -81,10 +81,5 @@ export const theme = createTheme({
   colors: { grape, spoon, pumpkin, plum, forest },
   // Fun brand gradient (purple → spoon green).
   defaultGradient: { from: 'grape.6', to: 'spoon.6', deg: 135 },
-  fontFamily: "Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-  headings: {
-    fontFamily: "Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-    fontWeight: '700',
-  },
   defaultRadius: 'lg',
 });

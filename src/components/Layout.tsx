@@ -6,7 +6,10 @@ import { SaveIndicator } from './SaveIndicator';
 export function Layout() {
   const navigate = useNavigate();
   return (
-    <AppShell header={{ height: 64 }} padding="md">
+    <AppShell
+      header={{ height: { base: 64, md: 80 }}}
+      padding="md"
+    >
       <AppShell.Header>
         <Group h="100%" px="md" justify="space-between" wrap="nowrap">
           <button
