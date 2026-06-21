@@ -113,6 +113,7 @@
     "themeSystem": "sistema",
     "language": "idioma",
     "privacy": "política de privacidade",
+    "terms": "termos de uso",
     "about": "sobre o spoony",
     "exportDone": "Seus dados foram baixados.",
     "deleteAccount": "excluir minha conta e dados",
@@ -134,10 +135,99 @@
     "body": "O Spoony é um diário de energia baseado na Teoria das Colheres. Seus dados ficam criptografados em uma pasta privada no seu próprio Google Drive — ninguém mais pode lê-los.",
     "version": "Versão"
   },
-  "privacy": {
-    "title": "Política de privacidade",
-    "body": "O Spoony guarda todos os seus registros em uma pasta oculta e privada no seu próprio Google Drive, criptografados no seu aparelho antes do envio. Não temos servidor e nunca recebemos uma cópia dos seus dados. Revogar o acesso nas configurações da sua Conta Google interrompe a sincronização.",
-    "body2": ""
+  "privacyPolicy": {
+    "title": "Política de Privacidade",
+    "lastUpdated": "Última atualização: 21 de junho de 2026",
+    "intro": "O Spoony é um diário de energia gratuito e de código aberto. Esta página explica exatamente quais dados o app acessa, e quais não acessa — em linguagem simples.",
+    "sections": [
+      {
+        "heading": "Resumo rápido",
+        "body": "Não temos servidor, banco de dados, nem qualquer forma de ver os seus dados. Tudo que você registra é criptografado no seu aparelho e guardado localmente no seu navegador ou em uma pasta oculta e privada no seu próprio Google Drive. Nunca recebemos uma cópia disso."
+      },
+      {
+        "heading": "O que acessamos na sua Conta Google",
+        "body": "Ao entrar com o Google, o Spoony solicita apenas: seu nome, e-mail e foto de perfil (para mostrar quem está conectado), e acesso a uma pasta oculta e exclusiva do app no seu Google Drive (chamada tecnicamente \"drive.appdata\"), que só o Spoony pode ver — não os seus arquivos comuns do Drive, nem qualquer outra coisa na sua Conta Google."
+      },
+      {
+        "heading": "O que guardamos, e onde",
+        "body": "Seus registros diários e configurações de atividades ficam guardados no armazenamento local do seu navegador e, se você estiver conectado, criptografados e sincronizados com essa pasta oculta do Drive, para você usar o Spoony em mais de um aparelho. A chave de criptografia é gerada no seu aparelho e nunca é enviada para nós — ela só viaja, junto com seus dados criptografados, até a sua própria pasta no Drive."
+      },
+      {
+        "heading": "Como funciona a criptografia",
+        "body": "Antes de qualquer coisa sair do seu aparelho, ela é criptografada com AES-256-GCM usando uma chave gerada localmente. O Google Drive só guarda os bytes criptografados, mais a chave necessária para decifrá-los — ambos dentro da sua própria pasta privada e exclusiva do app. Ninguém além de você (e de quem tiver a chave) pode ler seus registros, nem nós."
+      },
+      {
+        "heading": "O que não fazemos",
+        "body": "Sem análises (analytics), sem publicidade, sem rastreadores, sem cookies definidos pelo Spoony, e nenhum terceiro além do Google (que fornece o login e o armazenamento no seu próprio Drive). Não existe servidor do Spoony: o app é código estático que roda inteiramente no seu navegador."
+      },
+      {
+        "heading": "Seu controle sobre seus dados",
+        "body": "Você pode exportar seus dados a qualquer momento em Configurações. Você pode excluir tudo permanentemente — sua pasta no Drive e os dados locais do navegador — em Configurações → \"excluir minha conta e dados\". Você também pode revogar o acesso do Spoony a qualquer momento nas configurações de segurança da sua Conta Google, o que interrompe a sincronização imediatamente."
+      },
+      {
+        "heading": "Retenção de dados",
+        "body": "Seus dados ficam guardados enquanto você continuar usando o Spoony. Não fazemos backups, porque nunca temos uma cópia para fazer backup. Excluir seus dados em Configurações os remove tanto do seu aparelho quanto do seu Google Drive."
+      },
+      {
+        "heading": "Privacidade de crianças",
+        "body": "O Spoony não é direcionado a crianças, e não coletamos dados de pessoas com menos de 13 anos de forma consciente."
+      },
+      {
+        "heading": "Código aberto",
+        "body": "O código-fonte completo do Spoony é público, então você (ou qualquer pessoa) pode verificar cada afirmação desta página. Encontre em github.com/russoedu/spoony."
+      },
+      {
+        "heading": "Alterações nesta política",
+        "body": "Se esta política mudar, atualizaremos a data acima. Continuar usando o Spoony após uma alteração significa que você aceita a atualização."
+      },
+      {
+        "heading": "Contato",
+        "body": "Dúvidas sobre seus dados ou esta política? Envie um e-mail para mentautoapps@gmail.com."
+      }
+    ]
+  },
+  "termsOfService": {
+    "title": "Termos de Uso",
+    "lastUpdated": "Última atualização: 21 de junho de 2026",
+    "intro": "Estes termos cobrem o uso do Spoony, um diário de energia gratuito e de código aberto. Ao usar o app, você concorda com eles.",
+    "sections": [
+      {
+        "heading": "O serviço",
+        "body": "O Spoony é uma ferramenta gratuita para ajudar você a registrar e planejar sua energia diária (\"colheres\") com base na Teoria das Colheres. Ele é fornecido como está, sem garantia de disponibilidade ininterrupta, e não é um dispositivo médico — não diagnostica, trata, nem fornece aconselhamento médico. Sempre consulte um profissional qualificado para decisões médicas."
+      },
+      {
+        "heading": "Sua conta e seus dados",
+        "body": "Você entra com a sua própria Conta Google. Seus registros são criptografados no seu aparelho e guardados localmente e em uma pasta privada no seu próprio Google Drive — veja a Política de Privacidade para detalhes. Os dados são seus; nunca guardamos uma cópia deles."
+      },
+      {
+        "heading": "Uso aceitável",
+        "body": "Use o Spoony apenas para o propósito a que se destina. Não tente interferir, fazer engenharia reversa com fins maliciosos, ou abusar das APIs do Google das quais o app depende."
+      },
+      {
+        "heading": "Código aberto e licença",
+        "body": "O código-fonte do Spoony é publicado sob a licença MIT em github.com/russoedu/spoony. Você é livre para ler, criar forks, hospedar você mesmo, ou modificar o código conforme os termos dessa licença."
+      },
+      {
+        "heading": "Sem garantias",
+        "body": "O Spoony é fornecido \"como está\", gratuitamente, por um desenvolvedor individual, sem garantias de qualquer tipo, expressas ou implícitas. Na máxima extensão permitida por lei, não nos responsabilizamos por quaisquer danos ou perdas decorrentes do uso do app, incluindo perda de dados — embora, por design, seus dados fiquem no seu próprio Google Drive e navegador, não conosco."
+      },
+      {
+        "heading": "Mudanças e disponibilidade",
+        "body": "O app pode mudar, ser atualizado ou ser descontinuado em qualquer momento. Como não é um serviço pago ou contratual, não garantimos nenhum nível específico de disponibilidade."
+      },
+      {
+        "heading": "Encerrando o uso",
+        "body": "Você pode parar de usar o Spoony quando quiser. Revogue o acesso nas configurações de segurança da sua Conta Google, e exclua tudo em Configurações → \"excluir minha conta e dados\"."
+      },
+      {
+        "heading": "Alterações nestes termos",
+        "body": "Se estes termos mudarem, atualizaremos a data acima. Continuar usando o Spoony após uma alteração significa que você aceita a atualização."
+      },
+      {
+        "heading": "Contato",
+        "body": "Dúvidas sobre estes termos? Envie um e-mail para mentautoapps@gmail.com."
+      }
+    ]
   },
   "language": {
     "en": "English",
@@ -175,6 +265,8 @@
     "featThemeTitle": "Claro ou escuro",
     "featThemeBody": "Um visual calmo e amigável que segue o tema do seu sistema.",
     "footerCta": "Pronto para acompanhar suas colheres?",
-    "footerNote": "Grátis • sem anúncios • seus dados são seus"
+    "footerNote": "Grátis • sem anúncios • seus dados são seus",
+    "privacyLink": "Política de Privacidade",
+    "termsLink": "Termos de Uso"
   }
 }

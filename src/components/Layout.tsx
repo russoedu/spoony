@@ -10,7 +10,7 @@ export function Layout() {
       <AppShell.Header>
         <Group h="100%" px="md" justify="space-between" wrap="nowrap">
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/app')}
             style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex' }}
             aria-label="Spoony home"
           >
@@ -22,7 +22,7 @@ export function Layout() {
               variant="subtle"
               size="lg"
               aria-label="History"
-              onClick={() => navigate('/history')}
+              onClick={() => navigate('/app/history')}
             >
               <IconCalendar size={22} />
             </ActionIcon>
@@ -30,7 +30,7 @@ export function Layout() {
               variant="subtle"
               size="lg"
               aria-label="Menu"
-              onClick={() => navigate('/settings')}
+              onClick={() => navigate('/app/settings')}
             >
               <IconMenu2 size={22} />
             </ActionIcon>

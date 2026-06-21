@@ -1,20 +1,55 @@
 import { InstallPrompt } from '@/components/InstallPrompt';
 import { Layout } from '@/components/Layout';
+import { PublicLayout } from '@/components/PublicLayout';
 import { ThemeController } from '@/components/ThemeController';
 import { ActivitiesConfigScreen } from '@/features/activities/ActivitiesConfigScreen';
 import { DailyLogScreen } from '@/features/daily-log/DailyLogScreen';
 import { HistoryScreen } from '@/features/history/HistoryScreen';
+import { PrivacyPolicyScreen, TermsOfServiceScreen } from '@/features/legal/LegalPage';
 import { LandingPage } from '@/features/marketing/LandingPage';
 import { SettingsScreen } from '@/features/settings/SettingsScreen';
 import { preloadGis } from '@/lib/google/gis-auth';
 import { useStore } from '@/store/useStore';
 import { Center, Loader } from '@mantine/core';
 import { useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes, useNavigate } from 'react-router-dom';
 
-export function App() {
+function FullscreenLoader() {
+  return (
+    <Center mih="100dvh">
+      <Loader />
+    </Center>
+  );
+}
+
+/** The "/" route: bounces a signed-in user straight into /app, otherwise shows the marketing page. */
+function RootRoute() {
+  const authStatus = useStore((s) => s.authStatus);
+  if (authStatus === 'restoring') return <FullscreenLoader />;
+  if (authStatus === 'authed') return <Navigate to="/app" replace />;
+  return <LandingPage />;
+}
+
+/** Gate for everything under /app: redirects to the landing page when signed out. */
+function ProtectedRoute() {
   const authStatus = useStore((s) => s.authStatus);
   const ready = useStore((s) => s.ready);
+
+  if (authStatus === 'restoring') return <FullscreenLoader />;
+  if (authStatus !== 'authed') return <Navigate to="/" replace />;
+  if (!ready) return <FullscreenLoader />;
+
+  return (
+    <>
+      <ThemeController />
+      <FirstRunRedirect />
+      <Outlet />
+      <InstallPrompt />
+    </>
+  );
+}
+
+export function App() {
   const restoreSession = useStore((s) => s.restoreSession);
   const setOnline = useStore((s) => s.setOnline);
 
@@ -34,40 +69,25 @@ export function App() {
     };
   }, [setOnline]);
 
-  if (authStatus === 'restoring') {
-    return (
-      <Center mih="100dvh">
-        <Loader />
-      </Center>
-    );
-  }
-
-  if (authStatus !== 'authed') {
-    return <LandingPage />
-  }
-
-  if (!ready) {
-    return (
-      <Center mih="100dvh">
-        <Loader />
-      </Center>
-    );
-  }
-
   return (
-    <>
-      <ThemeController />
-      <FirstRunRedirect />
-      <Routes>
+    <Routes>
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<RootRoute />} />
+        <Route path="/privacy" element={<PrivacyPolicyScreen />} />
+        <Route path="/terms" element={<TermsOfServiceScreen />} />
+      </Route>
+
+      <Route path="/app" element={<ProtectedRoute />}>
         <Route element={<Layout />}>
-          <Route path="/" element={<DailyLogScreen />} />
-          <Route path="/history" element={<HistoryScreen />} />
-          <Route path="/settings" element={<SettingsScreen />} />
-          <Route path="/settings/activities" element={<ActivitiesConfigScreen />} />
+          <Route index element={<DailyLogScreen />} />
+          <Route path="history" element={<HistoryScreen />} />
+          <Route path="settings" element={<SettingsScreen />} />
+          <Route path="settings/activities" element={<ActivitiesConfigScreen />} />
         </Route>
-      </Routes>
-      <InstallPrompt />
-    </>
+      </Route>
+
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 
@@ -78,7 +98,7 @@ function FirstRunRedirect() {
   const clearFirstRun = useStore((s) => s.clearFirstRun);
   useEffect(() => {
     if (firstRun) {
-      navigate('/settings/activities');
+      navigate('/app/settings/activities');
       clearFirstRun();
     }
   }, [firstRun, navigate, clearFirstRun]);

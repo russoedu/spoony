@@ -101,7 +101,7 @@ export function ActivitiesConfigScreen() {
         <Button
           variant="light"
           leftSection={<IconCheck size={16} />}
-          onClick={() => navigate('/settings')}
+          onClick={() => navigate('/app/settings')}
         >
           {t('common.done')}
         </Button>
