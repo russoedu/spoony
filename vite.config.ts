@@ -42,8 +42,9 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
-        // Google APIs / GIS must always hit the network.
-        navigateFallbackDenylist: [/^\/api/],
+        // Google APIs / GIS must always hit the network, and crawler-facing
+        // static files must be served as-is, not bounced through the SPA shell.
+        navigateFallbackDenylist: [/^\/api/, /^\/sitemap\.xml$/, /^\/robots\.txt$/],
       },
       devOptions: {
         enabled: false,
