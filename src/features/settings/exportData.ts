@@ -1,5 +1,6 @@
 import type { AppConfig, DayEntry } from '@/types';
 import { getConfigLocal, getDayLocal, listDayDatesLocal } from '@/lib/storage/db';
+import { downloadBlob } from '@/lib/downloadBlob';
 
 /** Gathers all locally-cached data into a single decrypted JSON export. */
 export async function buildExport(): Promise<{ config: AppConfig | null; days: DayEntry[] }> {
@@ -19,12 +20,5 @@ export async function downloadExport(): Promise<void> {
   const blob = new Blob([JSON.stringify({ app: 'spoony', exportedAt: new Date().toISOString(), ...data }, null, 2)], {
     type: 'application/json',
   });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `spoony-export-${new Date().toISOString().slice(0, 10)}.json`;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
+  downloadBlob(blob, `spoony-export-${new Date().toISOString().slice(0, 10)}.json`);
 }

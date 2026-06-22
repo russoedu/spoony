@@ -1,10 +1,24 @@
+import { useState } from 'react';
 import { ActionIcon, AppShell, Container, Group, Image } from '@mantine/core';
-import { IconCalendar, IconMenu2 } from '@tabler/icons-react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { IconCalendar, IconMenu2, IconShare } from '@tabler/icons-react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
+import { useTranslation } from 'react-i18next';
+import { useStore } from '@/store/useStore';
 import { SaveIndicator } from './SaveIndicator';
+import { ExportLogModal } from '@/features/daily-log/export/ExportLogModal';
 
 export function Layout() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { i18n } = useTranslation();
+  const day = useStore((s) => s.currentDay);
+  const currentDate = useStore((s) => s.currentDate);
+  const config = useStore((s) => s.config);
+  const [exportOpen, setExportOpen] = useState(false);
+
+  const onDailyLog = location.pathname === '/app';
+
   return (
     <AppShell header={{ height: 64 }} padding="md">
       <AppShell.Header>
@@ -26,6 +40,16 @@ export function Layout() {
             >
               <IconCalendar size={22} />
             </ActionIcon>
+            {onDailyLog && day && config && (
+              <ActionIcon
+                variant="subtle"
+                size="lg"
+                aria-label="Export"
+                onClick={() => setExportOpen(true)}
+              >
+                <IconShare size={22} />
+              </ActionIcon>
+            )}
             <ActionIcon
               variant="subtle"
               size="lg"
@@ -43,6 +67,16 @@ export function Layout() {
           <Outlet />
         </Container>
       </AppShell.Main>
+
+      {onDailyLog && day && config && (
+        <ExportLogModal
+          opened={exportOpen}
+          onClose={() => setExportOpen(false)}
+          day={day}
+          config={config}
+          dateLabel={dayjs(currentDate).locale(i18n.language).format('ddd, D MMM YYYY')}
+        />
+      )}
     </AppShell>
   );
 }
