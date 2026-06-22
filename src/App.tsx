@@ -1,6 +1,6 @@
 import { InstallPrompt } from '@/components/InstallPrompt';
-import { Layout } from '@/components/Layout';
-import { PublicLayout } from '@/components/PublicLayout';
+import { LayoutApp } from '@/components/LayoutApp';
+import { LayoutPublic } from '@/components/LayoutPublic';
 import { ThemeController } from '@/components/ThemeController';
 import { ActivitiesConfigScreen } from '@/features/activities/ActivitiesConfigScreen';
 import { DailyLogScreen } from '@/features/daily-log/DailyLogScreen';
@@ -71,14 +71,14 @@ export function App() {
 
   return (
     <Routes>
-      <Route element={<PublicLayout />}>
+      <Route element={<LayoutPublic />}>
         <Route path="/" element={<RootRoute />} />
         <Route path="/privacy" element={<PrivacyPolicyScreen />} />
         <Route path="/terms" element={<TermsOfServiceScreen />} />
       </Route>
 
       <Route path="/app" element={<ProtectedRoute />}>
-        <Route element={<Layout />}>
+        <Route element={<LayoutApp />}>
           <Route index element={<DailyLogScreen />} />
           <Route path="history" element={<HistoryScreen />} />
           <Route path="settings" element={<SettingsScreen />} />

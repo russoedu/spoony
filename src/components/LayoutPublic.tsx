@@ -1,12 +1,12 @@
-import { Anchor, Box, Button, Container, Group, Image, SegmentedControl } from '@mantine/core';
-import { Outlet, Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import i18n, { SUPPORTED_LANGUAGES } from '@/providers/i18n';
 import { useStore } from '@/store/useStore';
+import { Anchor, Box, Button, Container, Group, Image, SegmentedControl } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
+import { Link, Outlet } from 'react-router-dom';
 import { SignInButton } from './SignInButton';
 
 /** Shared header + footer for the public pages: landing, privacy policy, terms of service. */
-export function PublicLayout() {
+export function LayoutPublic() {
   const { t } = useTranslation();
   const authStatus = useStore((s) => s.authStatus);
 
