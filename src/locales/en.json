@@ -14,7 +14,8 @@
     "back": "Back",
     "today": "Today",
     "loading": "Loading…",
-    "retry": "Retry"
+    "retry": "Retry",
+    "type": "Type"
   },
   "auth": {
     "connectTitle": "Connect with your Google Account",
@@ -76,7 +77,17 @@
     "notePlaceholder": "Write here…",
     "autoSaving": "auto saving…",
     "saved": "saved",
-    "offline": "offline — saved on this device"
+    "offline": "offline — saved on this device",
+    "activityLabel": "Activity",
+    "typeTakes": "Takes",
+    "typeGives": "Gives",
+    "typeScale": "Scale",
+    "exportTitle": "Export your day",
+    "exportImage": "Image",
+    "exportTable": "Table (CSV)",
+    "exportText": "Text",
+    "exportCopied": "Copied to clipboard",
+    "exportFailed": "Couldn't export. Please try again."
   },
   "config": {
     "title": "Activities",
